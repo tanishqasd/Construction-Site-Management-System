@@ -58,6 +58,13 @@ const workerSchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
+    },
+
+    assignedSite: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Site",
+      default: null,
     },
   },
   {

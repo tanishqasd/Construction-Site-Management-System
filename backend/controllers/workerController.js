@@ -108,10 +108,39 @@ const deleteWorker = async (req, res) => {
     });
   }
 };
+
+const assignWorkerToSite = async (req, res) => {
+  try {
+
+    const worker = await Worker.findById(req.params.workerId);
+
+    if (!worker) {
+      return res.status(404).json({
+        message: "Worker not found",
+      });
+    }
+
+    worker.assignedSite = req.body.siteId;
+
+    await worker.save();
+
+    res.status(200).json({
+      message: "Worker Assigned Successfully",
+      worker,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   addWorker,
   getAllWorkers,
   getWorkerById,
   updateWorker,
   deleteWorker,
+  assignWorkerToSite,
 };

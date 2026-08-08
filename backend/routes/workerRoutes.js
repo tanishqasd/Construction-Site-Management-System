@@ -8,6 +8,7 @@ const {
   getWorkerById,
   updateWorker,
   deleteWorker,
+  assignWorkerToSite,
 } = require("../controllers/workerController");
 router.get("/", authMiddleware, getAllWorkers);
 
@@ -18,7 +19,7 @@ router.get("/delete-test", (req, res) => {
 router.get("/:id", authMiddleware, getWorkerById);
 
 router.post("/", authMiddleware, addWorker);
-
+router.put("/assign/:workerId", authMiddleware, assignWorkerToSite);
 router.put("/:id", authMiddleware, updateWorker);
 
 router.delete("/:id", authMiddleware, deleteWorker);
