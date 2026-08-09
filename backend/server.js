@@ -19,6 +19,7 @@ const siteRoutes = require("./routes/siteRoutes");
 const attendanceRoutes = require("./routes/attendanceRoutes");
 const materialRoutes = require("./routes/materialRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
+const expenseRoutes = require("./routes/expenseRoutes");
 app.use("/", homeRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
@@ -27,6 +28,7 @@ app.use("/api/sites", siteRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/materials", materialRoutes);
 app.use("/api/attendance", attendanceRoutes);
+app.use("/api/expenses", expenseRoutes);
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
