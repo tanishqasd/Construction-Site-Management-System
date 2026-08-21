@@ -81,9 +81,27 @@ const updateSite = async (req, res) => {
   }
 };
 
+const deleteSite = async (req, res) => {
+  try {
+    const site = await Site.findOneAndDelete({
+      _id: req.params.id,
+      createdBy: req.user.id,
+    });
+
+    if (!site) {
+      return res.status(404).json({ message: "Site not found or unauthorized" });
+    }
+
+    res.status(200).json({ message: "Site Deleted Successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createSite,
   getAllSites,
   getSiteById,
   updateSite,
+  deleteSite,
 };

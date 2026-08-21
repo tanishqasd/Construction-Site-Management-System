@@ -37,7 +37,10 @@ const getAllAttendance = async (req, res) => {
 
 const getAttendanceById = async (req, res) => {
   try {
-    const attendance = await Attendance.findById(req.params.id)
+    const attendance = await Attendance.findOne({
+      _id: req.params.id,
+      markedBy: req.user.id,
+    })
       .populate("worker", "fullName")
       .populate("site", "siteName");
 
@@ -57,8 +60,8 @@ const getAttendanceById = async (req, res) => {
 
 const updateAttendance = async (req, res) => {
   try {
-    const attendance = await Attendance.findByIdAndUpdate(
-      req.params.id,
+    const attendance = await Attendance.findOneAndUpdate(
+      { _id: req.params.id, markedBy: req.user.id },
       req.body,
       {
         new: true,
@@ -85,7 +88,10 @@ const updateAttendance = async (req, res) => {
 
 const deleteAttendance = async (req, res) => {
   try {
-    const attendance = await Attendance.findByIdAndDelete(req.params.id);
+    const attendance = await Attendance.findOneAndDelete({
+      _id: req.params.id,
+      markedBy: req.user.id,
+    });
 
     if (!attendance) {
       return res.status(404).json({

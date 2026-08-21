@@ -1,36 +1,39 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require("cors");
 const connectDB = require("./config/db");
 
 dotenv.config();
-
 connectDB();
 
 const app = express();
+
+// Enable CORS for frontend integration
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://localhost:3000"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
+app.use("/api/tasks", require("./routes/taskRoutes"));
+app.use("/api/issues", require("./routes/issueRoutes"));
 
 const PORT = process.env.PORT || 5000;
 
-const homeRoutes = require("./routes/homeRoutes");
-const authRoutes = require("./routes/authRoutes");
-const userRoutes = require("./routes/userRoutes");
-const workerRoutes = require("./routes/workerRoutes");
-const siteRoutes = require("./routes/siteRoutes");
-const attendanceRoutes = require("./routes/attendanceRoutes");
-const materialRoutes = require("./routes/materialRoutes");
-const dashboardRoutes = require("./routes/dashboardRoutes");
-const expenseRoutes = require("./routes/expenseRoutes");
-const wageRoutes = require("./routes/wageRoutes");
-app.use("/", homeRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/user", userRoutes);
-app.use("/api/workers", workerRoutes);
-app.use("/api/sites", siteRoutes);
-app.use("/api/dashboard", dashboardRoutes);
-app.use("/api/materials", materialRoutes);
-app.use("/api/attendance", attendanceRoutes);
-app.use("/api/expenses", expenseRoutes);
-app.use("/api/wages", wageRoutes);
+// API Routes
+app.use("/", require("./routes/homeRoutes"));
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/user", require("./routes/userRoutes"));
+app.use("/api/workers", require("./routes/workerRoutes"));
+app.use("/api/sites", require("./routes/siteRoutes"));
+app.use("/api/dashboard", require("./routes/dashboardRoutes"));
+app.use("/api/materials", require("./routes/materialRoutes"));
+app.use("/api/attendance", require("./routes/attendanceRoutes"));
+app.use("/api/expenses", require("./routes/expenseRoutes"));
+app.use("/api/wages", require("./routes/wageRoutes"));
+
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

@@ -36,8 +36,10 @@ const getAllMaterials = async (req, res) => {
 
 const getMaterialById = async (req, res) => {
   try {
-    const material = await Material.findById(req.params.id)
-      .populate("site", "siteName");
+    const material = await Material.findOne({
+      _id: req.params.id,
+      createdBy: req.user.id,
+    }).populate("site", "siteName");
 
     if (!material) {
       return res.status(404).json({
@@ -46,7 +48,6 @@ const getMaterialById = async (req, res) => {
     }
 
     res.status(200).json(material);
-
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -56,8 +57,8 @@ const getMaterialById = async (req, res) => {
 
 const updateMaterial = async (req, res) => {
   try {
-    const material = await Material.findByIdAndUpdate(
-      req.params.id,
+    const material = await Material.findOneAndUpdate(
+      { _id: req.params.id, createdBy: req.user.id },
       req.body,
       {
         new: true,
@@ -75,7 +76,6 @@ const updateMaterial = async (req, res) => {
       message: "Material Updated Successfully",
       material,
     });
-
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -85,7 +85,10 @@ const updateMaterial = async (req, res) => {
 
 const deleteMaterial = async (req, res) => {
   try {
-    const material = await Material.findByIdAndDelete(req.params.id);
+    const material = await Material.findOneAndDelete({
+      _id: req.params.id,
+      createdBy: req.user.id,
+    });
 
     if (!material) {
       return res.status(404).json({
@@ -96,7 +99,6 @@ const deleteMaterial = async (req, res) => {
     res.status(200).json({
       message: "Material Deleted Successfully",
     });
-
   } catch (error) {
     res.status(500).json({
       message: error.message,

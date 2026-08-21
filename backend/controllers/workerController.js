@@ -31,6 +31,7 @@ const addWorker = async (req, res) => {
     });
   }
 };
+
 const getAllWorkers = async (req, res) => {
   try {
     const workers = await Worker.find({ createdBy: req.user.id });
@@ -45,9 +46,13 @@ const getAllWorkers = async (req, res) => {
     });
   }
 };
+
 const getWorkerById = async (req, res) => {
   try {
-    const worker = await Worker.findById(req.params.id);
+    const worker = await Worker.findOne({
+      _id: req.params.id,
+      createdBy: req.user.id,
+    });
 
     if (!worker) {
       return res.status(404).json({
@@ -62,10 +67,11 @@ const getWorkerById = async (req, res) => {
     });
   }
 };
+
 const updateWorker = async (req, res) => {
   try {
-    const worker = await Worker.findByIdAndUpdate(
-      req.params.id,
+    const worker = await Worker.findOneAndUpdate(
+      { _id: req.params.id, createdBy: req.user.id },
       req.body,
       {
         new: true,
@@ -89,9 +95,13 @@ const updateWorker = async (req, res) => {
     });
   }
 };
+
 const deleteWorker = async (req, res) => {
   try {
-    const worker = await Worker.findByIdAndDelete(req.params.id);
+    const worker = await Worker.findOneAndDelete({
+      _id: req.params.id,
+      createdBy: req.user.id,
+    });
 
     if (!worker) {
       return res.status(404).json({
@@ -111,8 +121,10 @@ const deleteWorker = async (req, res) => {
 
 const assignWorkerToSite = async (req, res) => {
   try {
-
-    const worker = await Worker.findById(req.params.workerId);
+    const worker = await Worker.findOne({
+      _id: req.params.workerId,
+      createdBy: req.user.id,
+    });
 
     if (!worker) {
       return res.status(404).json({
@@ -121,14 +133,12 @@ const assignWorkerToSite = async (req, res) => {
     }
 
     worker.assignedSite = req.body.siteId;
-
     await worker.save();
 
     res.status(200).json({
       message: "Worker Assigned Successfully",
       worker,
     });
-
   } catch (error) {
     res.status(500).json({
       message: error.message,

@@ -36,8 +36,10 @@ const getAllExpenses = async (req, res) => {
 
 const getExpenseById = async (req, res) => {
   try {
-    const expense = await Expense.findById(req.params.id)
-      .populate("site", "siteName");
+    const expense = await Expense.findOne({
+      _id: req.params.id,
+      createdBy: req.user.id,
+    }).populate("site", "siteName");
 
     if (!expense) {
       return res.status(404).json({
@@ -55,8 +57,8 @@ const getExpenseById = async (req, res) => {
 
 const updateExpense = async (req, res) => {
   try {
-    const expense = await Expense.findByIdAndUpdate(
-      req.params.id,
+    const expense = await Expense.findOneAndUpdate(
+      { _id: req.params.id, createdBy: req.user.id },
       req.body,
       {
         new: true,
@@ -83,7 +85,10 @@ const updateExpense = async (req, res) => {
 
 const deleteExpense = async (req, res) => {
   try {
-    const expense = await Expense.findByIdAndDelete(req.params.id);
+    const expense = await Expense.findOneAndDelete({
+      _id: req.params.id,
+      createdBy: req.user.id,
+    });
 
     if (!expense) {
       return res.status(404).json({
@@ -106,5 +111,5 @@ module.exports = {
   getAllExpenses,
   getExpenseById,
   updateExpense,
-  deleteExpense
+  deleteExpense,
 };

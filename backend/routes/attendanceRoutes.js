@@ -8,7 +8,7 @@ const {
   getAttendanceById,
   updateAttendance,
   deleteAttendance,
-} = require("../controllers/attendanceController");
+} = require("../controllers/attendanceController")
 router.post("/", authMiddleware, markAttendance);
 router.get("/", authMiddleware, getAllAttendance);
 router.get("/:id", authMiddleware, getAttendanceById);
