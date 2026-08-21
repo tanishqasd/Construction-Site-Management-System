@@ -33,6 +33,7 @@ app.use("/api/materials", require("./routes/materialRoutes"));
 app.use("/api/attendance", require("./routes/attendanceRoutes"));
 app.use("/api/expenses", require("./routes/expenseRoutes"));
 app.use("/api/wages", require("./routes/wageRoutes"));
+app.use('/api/projects', projectRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
