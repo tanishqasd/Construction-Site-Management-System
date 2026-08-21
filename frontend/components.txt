@@ -1,0 +1,1446 @@
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\dashboard\ActivityFeed.tsx
+==============================
+import React from "react";
+import { ClipboardCheckIcon, PackageIcon, TriangleAlertIcon, HardHatIcon, FileTextIcon, ReceiptIcon, CameraIcon, BoxIcon } from "lucide-react";
+import { Panel, PanelHeader } from "../ui/Panel";
+import { activityFeed } from "../../data/activity";
+import { ActivityEvent } from "../../types";
+const kindIcon: Record<ActivityEvent['kind'], {
+  icon: BoxIcon;
+  tone: string;
+}> = {
+  progress: {
+    icon: ClipboardCheckIcon,
+    tone: 'text-signal-green bg-signal-greenSoft'
+  },
+  material: {
+    icon: PackageIcon,
+    tone: 'text-safety-500 bg-safety-50'
+  },
+  issue: {
+    icon: TriangleAlertIcon,
+    tone: 'text-signal-red bg-signal-redSoft'
+  },
+  labour: {
+    icon: HardHatIcon,
+    tone: 'text-steel-600 bg-steel-50'
+  },
+  document: {
+    icon: FileTextIcon,
+    tone: 'text-signal-blue bg-signal-blueSoft'
+  },
+  expense: {
+    icon: ReceiptIcon,
+    tone: 'text-ink-700 bg-ink-100'
+  },
+  photo: {
+    icon: CameraIcon,
+    tone: 'text-steel-600 bg-steel-50'
+  }
+};
+export function ActivityFeed() {
+  return <Panel>
+      <PanelHeader title="Recent site activity" subtitle="Live log from DPRs, stores and site teams" action={<span className="font-mono text-2xs text-ink-400">18 Aug 2026</span>} />
+      <ol className="px-4 py-3">
+        {activityFeed.map((event, index) => {
+        const {
+          icon: Icon,
+          tone
+        } = kindIcon[event.kind];
+        const isLast = index === activityFeed.length - 1;
+        return <li key={event.id} className="relative flex gap-3 pb-4 last:pb-0">
+              {!isLast && <span className="absolute left-3 top-7 h-[calc(100%-1.75rem)] w-px bg-ink-100" aria-hidden />}
+              <span className={`relative flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${tone}`}>
+                <Icon className="h-3 w-3" aria-hidden />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs leading-snug text-ink-700">
+                  <span className="font-semibold text-ink-900">{event.actor}</span>{' '}
+                  <span className="text-ink-400">· {event.role}</span>
+                </p>
+                <p className="mt-0.5 text-xs leading-snug text-ink-600">{event.message}</p>
+                <p className="mt-1 font-mono text-2xs text-ink-400">
+                  {event.projectCode} · {event.time}
+                </p>
+              </div>
+            </li>;
+      })}
+      </ol>
+    </Panel>;
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\dashboard\AlertsPanel.tsx
+==============================
+import React from 'react';
+import { ChevronRightIcon, ShieldAlertIcon } from 'lucide-react';
+import { twMerge } from 'tailwind-merge';
+import { Panel, PanelFooterLink } from '../ui/Panel';
+import { alerts } from '../../data/activity';
+
+const levelStyles = {
+  critical: { border: 'border-l-signal-red', label: 'Critical', chip: 'bg-signal-red text-white' },
+  warning: { border: 'border-l-safety-400', label: 'Warning', chip: 'bg-safety-400 text-ink-900' },
+  info: { border: 'border-l-steel-400', label: 'Advisory', chip: 'bg-steel-500 text-white' }
+} as const;
+
+export function AlertsPanel() {
+  return (
+    <Panel className="overflow-hidden">
+      <header className="blueprint-grid flex items-center justify-between gap-3 border-b border-ink-800 bg-ink-900 px-4 py-3">
+        <div className="flex items-center gap-2">
+          <ShieldAlertIcon className="h-4 w-4 text-safety-400" aria-hidden />
+          <div>
+            <h2 className="text-sm font-semibold tracking-tight text-white">Needs a decision today</h2>
+            <p className="text-2xs text-ink-400">2 critical · 2 warnings · 1 advisory</p>
+          </div>
+        </div>
+      </header>
+      <ul>
+        {alerts.map((alert) => {
+          const style = levelStyles[alert.level];
+          return (
+            <li key={alert.id} className="border-b border-ink-100 last:border-0">
+              <button
+                type="button"
+                className={twMerge(
+                  'flex w-full items-start gap-3 border-l-2 px-4 py-3 text-left transition-colors duration-150 hover:bg-ink-50',
+                  style.border
+                )}>
+                
+                <span className="min-w-0 flex-1">
+                  <span className="flex items-center gap-2">
+                    <span
+                      className={twMerge(
+                        'rounded px-1.5 py-0.5 text-2xs font-semibold uppercase tracking-wide',
+                        style.chip
+                      )}>
+                      
+                      {style.label}
+                    </span>
+                    <span className="font-mono text-2xs text-ink-400">{alert.projectCode}</span>
+                  </span>
+                  <span className="mt-1.5 block text-xs font-semibold leading-snug text-ink-900">
+                    {alert.title}
+                  </span>
+                  <span className="mt-1 block text-2xs leading-snug text-ink-500">{alert.detail}</span>
+                  <span className="mt-1.5 block font-mono text-2xs text-ink-400">{alert.meta}</span>
+                </span>
+                <ChevronRightIcon className="mt-0.5 h-4 w-4 shrink-0 text-ink-300" aria-hidden />
+              </button>
+            </li>);
+
+        })}
+      </ul>
+      <PanelFooterLink>Open alert log</PanelFooterLink>
+    </Panel>);
+
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\dashboard\IssuesPanel.tsx
+==============================
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { MapPinIcon } from 'lucide-react';
+import { Panel, PanelHeader } from '../ui/Panel';
+import { StatusBadge } from '../ui/StatusBadge';
+import { openIssues } from '../../data/issues';
+
+const severityCounts = [
+{ label: 'Blockers', count: 4, tone: 'text-signal-red' },
+{ label: 'Major', count: 2, tone: 'text-signal-amber' },
+{ label: 'Minor', count: 1, tone: 'text-ink-600' }];
+
+
+export function IssuesPanel() {
+  return (
+    <Panel className="h-full">
+      <PanelHeader
+        title="Open site issues"
+        subtitle="Quality, safety, design and approval holds"
+        action={
+        <div className="flex items-center gap-3">
+            {severityCounts.map((s) =>
+          <span key={s.label} className="text-right">
+                <span className={`block font-mono text-sm font-semibold leading-none ${s.tone}`}>
+                  {s.count}
+                </span>
+                <span className="block text-2xs text-ink-400">{s.label}</span>
+              </span>
+          )}
+          </div>
+        } />
+      
+      <ul className="divide-y divide-ink-100">
+        {openIssues.slice(0, 5).map((issue) =>
+        <li key={issue.id} className="px-4 py-3 transition-colors duration-150 hover:bg-ink-50/60">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-2xs text-ink-400">{issue.ref}</span>
+                  <StatusBadge label={issue.severity} />
+                  <StatusBadge label={issue.category} tone="neutral" />
+                </div>
+                <p className="mt-1 truncate text-xs font-semibold text-ink-900">{issue.title}</p>
+                <p className="mt-1 flex items-center gap-1 text-2xs text-ink-500">
+                  <MapPinIcon className="h-3 w-3 shrink-0" aria-hidden />
+                  <span className="truncate">{issue.location}</span>
+                </p>
+              </div>
+              <div className="shrink-0 text-right">
+                <StatusBadge label={issue.status} />
+                <p className="mt-1.5 font-mono text-2xs text-ink-500">{issue.ageDays}d open</p>
+              </div>
+            </div>
+          </li>
+        )}
+      </ul>
+      <Link
+        to="/issues"
+        className="mt-auto flex items-center justify-center border-t border-ink-100 px-4 py-2.5 text-xs font-medium text-ink-600 transition-colors duration-150 hover:bg-ink-50 hover:text-ink-900">
+        
+        Open issue register
+      </Link>
+    </Panel>);
+
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\dashboard\KpiStrip.tsx
+==============================
+import React from "react";
+import { Link } from "react-router-dom";
+import { Building2Icon, ListChecksIcon, PackageIcon, TriangleAlertIcon, ArrowUpRightIcon, BoxIcon } from "lucide-react";
+import { twMerge } from "tailwind-merge";
+interface Kpi {
+  label: string;
+  value: string;
+  unit?: string;
+  detail: string;
+  to: string;
+  icon: BoxIcon;
+  accent: string;
+  detailTone: string;
+}
+const kpis: Kpi[] = [{
+  label: 'Active projects',
+  value: '5',
+  detail: '841 workers on site today',
+  to: '/projects',
+  icon: Building2Icon,
+  accent: 'text-steel-600',
+  detailTone: 'text-ink-500'
+}, {
+  label: 'Pending tasks',
+  value: '11',
+  detail: '5 overdue · 3 critical',
+  to: '/tasks',
+  icon: ListChecksIcon,
+  accent: 'text-signal-blue',
+  detailTone: 'text-signal-amber'
+}, {
+  label: 'Material alerts',
+  value: '5',
+  detail: '3 below one day of stock',
+  to: '/materials',
+  icon: PackageIcon,
+  accent: 'text-safety-500',
+  detailTone: 'text-signal-red'
+}, {
+  label: 'Open site issues',
+  value: '7',
+  detail: '4 blockers · avg age 7 days',
+  to: '/issues',
+  icon: TriangleAlertIcon,
+  accent: 'text-signal-red',
+  detailTone: 'text-signal-red'
+}];
+export function KpiStrip() {
+  return <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+      {kpis.map((kpi) => <Link key={kpi.label} to={kpi.to} className="group flex items-center gap-3 rounded-lg border border-ink-200 bg-white px-4 py-3 shadow-panel transition-colors duration-150 hover:border-ink-300">
+          <kpi.icon className={twMerge('h-5 w-5 shrink-0', kpi.accent)} aria-hidden />
+          <div className="min-w-0 flex-1">
+            <div className="flex items-baseline gap-1.5">
+              <span className="font-mono text-2xl font-semibold leading-none tracking-tight text-ink-900">
+                {kpi.value}
+              </span>
+              <span className="truncate text-xs font-medium text-ink-600">{kpi.label}</span>
+            </div>
+            <p className={twMerge('mt-1 truncate text-2xs', kpi.detailTone)}>{kpi.detail}</p>
+          </div>
+          <ArrowUpRightIcon className="h-3.5 w-3.5 shrink-0 text-ink-300 transition-colors duration-150 group-hover:text-ink-600" aria-hidden />
+        </Link>)}
+    </div>;
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\dashboard\MaterialAlertsPanel.tsx
+==============================
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Panel, PanelHeader } from '../ui/Panel';
+import { StatusBadge } from '../ui/StatusBadge';
+import { Button } from '../ui/Button';
+import { materialAlerts } from '../../data/materials';
+import { formatNumber } from '../../utils/format';
+
+export function MaterialAlertsPanel() {
+  return (
+    <Panel>
+      <PanelHeader
+        title="Material alerts"
+        subtitle="Stock at or below reorder level"
+        action={
+        <Button variant="secondary" size="sm">
+            Raise PO
+          </Button>
+        } />
+      
+      <ul className="divide-y divide-ink-100">
+        {materialAlerts.map((m) => {
+          const daysLeft = m.consumedThisWeek > 0 ? (m.inStock / (m.consumedThisWeek / 7)).toFixed(1) : '—';
+          return (
+            <li key={m.id} className="px-4 py-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="truncate text-xs font-semibold text-ink-900">{m.name}</p>
+                  <p className="mt-0.5 font-mono text-2xs text-ink-400">
+                    {m.projectCode} · {m.supplier}
+                  </p>
+                </div>
+                <StatusBadge label={m.state} />
+              </div>
+              <div className="mt-2 flex items-end justify-between gap-2">
+                <p className="font-mono text-2xs text-ink-500">
+                  <span className="text-sm font-semibold text-ink-900">{formatNumber(m.inStock)}</span>{' '}
+                  {m.unit} in stock · reorder at {formatNumber(m.reorderLevel)}
+                </p>
+                <p
+                  className={`font-mono text-2xs font-semibold ${
+                  m.state === 'Critical' ? 'text-signal-red' : 'text-signal-amber'}`
+                  }>
+                  
+                  {daysLeft} days cover
+                </p>
+              </div>
+            </li>);
+
+        })}
+      </ul>
+      <Link
+        to="/materials"
+        className="mt-auto flex items-center justify-center border-t border-ink-100 px-4 py-2.5 text-xs font-medium text-ink-600 transition-colors duration-150 hover:bg-ink-50 hover:text-ink-900">
+        
+        Open material register
+      </Link>
+    </Panel>);
+
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\dashboard\ProgressOverview.tsx
+==============================
+import React from 'react';
+import {
+  ResponsiveContainer,
+  ComposedChart,
+  Area,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip } from
+'recharts';
+import { Panel, PanelHeader } from '../ui/Panel';
+import { progressCurve } from '../../data/projects';
+
+const stats = [
+{ label: 'Actual progress', value: '55%', tone: 'text-ink-900' },
+{ label: 'Planned', value: '58%', tone: 'text-ink-600' },
+{ label: 'Variance', value: '−3.1%', tone: 'text-signal-red' },
+{ label: 'Value certified', value: '₹246 Cr', tone: 'text-ink-900' }];
+
+
+export function ProgressOverview() {
+  return (
+    <Panel>
+      <PanelHeader
+        title="Portfolio progress — planned vs actual"
+        subtitle="Weighted across 5 active projects · Feb – Aug 2026"
+        action={
+        <div className="flex items-center gap-3 text-2xs text-ink-500">
+            <span className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-sm bg-safety-400" aria-hidden /> Actual
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="h-0 w-3 border-t border-dashed border-ink-500" aria-hidden /> Planned
+            </span>
+          </div>
+        } />
+      
+      <div className="flex flex-col gap-4 p-4 xl:flex-row">
+        <dl className="grid grid-cols-2 gap-x-6 gap-y-3 xl:w-44 xl:shrink-0 xl:grid-cols-1 xl:gap-y-4">
+          {stats.map((s) =>
+          <div key={s.label}>
+              <dt className="font-mono text-2xs uppercase tracking-wider text-ink-400">{s.label}</dt>
+              <dd className={`mt-0.5 font-mono text-xl font-semibold tracking-tight ${s.tone}`}>
+                {s.value}
+              </dd>
+            </div>
+          )}
+          <div className="col-span-2 rounded-md border border-safety-200 bg-safety-50 p-2.5 xl:col-span-1">
+            <p className="text-2xs leading-snug text-safety-700">
+              Slippage driven by <span className="font-semibold">Aurum Residency</span> finishing works
+              and pier cap holds at Ring Road.
+            </p>
+          </div>
+        </dl>
+
+        <div className="h-56 min-w-0 flex-1">
+          <ResponsiveContainer width="100%" height="100%">
+            <ComposedChart data={progressCurve} margin={{ top: 8, right: 8, bottom: 0, left: -18 }}>
+              <CartesianGrid stroke="#e8eaec" vertical={false} />
+              <XAxis
+                dataKey="month"
+                tick={{ fill: '#828c96', fontSize: 11 }}
+                tickLine={false}
+                axisLine={{ stroke: '#d3d7db' }} />
+              
+              <YAxis
+                tick={{ fill: '#828c96', fontSize: 11 }}
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={(v: number) => `${v}%`}
+                domain={[0, 70]} />
+              
+              <Tooltip
+                contentStyle={{
+                  borderRadius: 6,
+                  border: '1px solid #d3d7db',
+                  fontSize: 12,
+                  boxShadow: '0 12px 32px -8px rgba(15,19,23,0.18)'
+                }}
+                formatter={(value: number, name: string) => [`${value}%`, name === 'actual' ? 'Actual' : 'Planned']}
+                labelStyle={{ fontWeight: 600, color: '#181d22' }} />
+              
+              <Area
+                type="monotone"
+                dataKey="actual"
+                stroke="#d4830b"
+                strokeWidth={2}
+                fill="#ec9e1f"
+                fillOpacity={0.12}
+                dot={{ r: 2.5, fill: '#d4830b', strokeWidth: 0 }}
+                activeDot={{ r: 4 }} />
+              
+              <Line
+                type="monotone"
+                dataKey="planned"
+                stroke="#616c77"
+                strokeWidth={1.5}
+                strokeDasharray="4 3"
+                dot={false} />
+              
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+    </Panel>);
+
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\dashboard\ProjectsProgressPanel.tsx
+==============================
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRightIcon, MapPinIcon, UsersIcon } from 'lucide-react';
+import { Panel, PanelHeader } from '../ui/Panel';
+import { ProgressBar } from '../ui/ProgressBar';
+import { StatusBadge } from '../ui/StatusBadge';
+import { Button } from '../ui/Button';
+import { activeProjects } from '../../data/projects';
+import { formatCurrency, percent } from '../../utils/format';
+
+export function ProjectsProgressPanel() {
+  return (
+    <Panel>
+      <PanelHeader
+        title="Active projects"
+        subtitle="Physical progress against baseline programme"
+        action={
+        <Link to="/projects">
+            <Button variant="secondary" size="sm">
+              All projects
+              <ArrowRightIcon className="h-3.5 w-3.5" aria-hidden />
+            </Button>
+          </Link>
+        } />
+      
+      <ul className="divide-y divide-ink-100">
+        {activeProjects.map((project) => {
+          const variance = project.progress - project.plannedProgress;
+          const budgetUsed = project.spent / project.budget * 100;
+          return (
+            <li key={project.id} className="px-4 py-3.5 transition-colors duration-150 hover:bg-ink-50/60">
+              <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-2xs text-ink-400">{project.code}</span>
+                    <StatusBadge label={project.status} />
+                  </div>
+                  <h3 className="mt-1 truncate text-sm font-semibold text-ink-900">{project.name}</h3>
+                  <p className="mt-0.5 flex items-center gap-3 text-2xs text-ink-500">
+                    <span className="flex items-center gap-1">
+                      <MapPinIcon className="h-3 w-3" aria-hidden />
+                      {project.location}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <UsersIcon className="h-3 w-3" aria-hidden />
+                      {project.workforce} on site
+                    </span>
+                  </p>
+                </div>
+                <div className="grid w-full shrink-0 grid-cols-3 gap-x-5 sm:w-auto sm:min-w-[300px]">
+                  <div>
+                    <p className="font-mono text-2xs uppercase tracking-wider text-ink-400">Progress</p>
+                    <p className="font-mono text-sm font-semibold text-ink-900">
+                      {percent(project.progress)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-mono text-2xs uppercase tracking-wider text-ink-400">Variance</p>
+                    <p
+                      className={`font-mono text-sm font-semibold ${
+                      variance < -4 ?
+                      'text-signal-red' :
+                      variance < 0 ?
+                      'text-signal-amber' :
+                      'text-signal-green'}`
+                      }>
+                      
+                      {variance > 0 ? '+' : '−'}
+                      {Math.abs(variance)}%
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-mono text-2xs uppercase tracking-wider text-ink-400">Cost used</p>
+                    <p className="font-mono text-sm font-semibold text-ink-900">
+                      {Math.round(budgetUsed)}%
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-2.5 flex items-center gap-3">
+                <ProgressBar
+                  value={project.progress}
+                  planned={project.plannedProgress}
+                  tone={variance < -4 ? 'red' : 'safety'}
+                  label={`${project.name} progress`}
+                  className="flex-1" />
+                
+                <span className="w-40 shrink-0 truncate text-right text-2xs text-ink-500">
+                  {project.phase}
+                </span>
+                <span className="hidden w-24 shrink-0 text-right font-mono text-2xs text-ink-500 md:block">
+                  {formatCurrency(project.spent)}
+                </span>
+              </div>
+            </li>);
+
+        })}
+      </ul>
+    </Panel>);
+
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\dashboard\SitePhotosPanel.tsx
+==============================
+import React from 'react';
+import { CameraIcon } from 'lucide-react';
+import { Panel, PanelHeader } from '../ui/Panel';
+import { sitePhotos } from '../../data/activity';
+import { Button } from '../ui/Button';
+
+export function SitePhotosPanel() {
+  return (
+    <Panel>
+      <PanelHeader
+        title="Site photos"
+        subtitle="Latest geo-tagged uploads from the field"
+        action={
+        <Button variant="secondary" size="sm">
+            <CameraIcon className="h-3.5 w-3.5" aria-hidden />
+            Upload
+          </Button>
+        } />
+      
+      <div className="grid grid-cols-2 gap-2 p-3">
+        {sitePhotos.map((photo) =>
+        <figure key={photo.id} className="group overflow-hidden rounded-md border border-ink-200">
+            <div className="aspect-[4/3] overflow-hidden bg-ink-100">
+              <img
+              src={photo.url}
+              alt={photo.caption}
+              className="h-full w-full object-cover transition-transform duration-200 ease-out group-hover:scale-[1.03]"
+              loading="lazy" />
+            
+            </div>
+            <figcaption className="px-2 py-1.5">
+              <p className="truncate text-2xs font-medium text-ink-800">{photo.caption}</p>
+              <p className="mt-0.5 truncate font-mono text-2xs text-ink-400">
+                {photo.projectCode} · {photo.time}
+              </p>
+            </figcaption>
+          </figure>
+        )}
+      </div>
+    </Panel>);
+
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\dashboard\TasksPanel.tsx
+==============================
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ClockIcon, CircleDotIcon } from 'lucide-react';
+import { twMerge } from 'tailwind-merge';
+import { Panel, PanelHeader } from '../ui/Panel';
+import { StatusBadge } from '../ui/StatusBadge';
+import { tasks } from '../../data/tasks';
+import { formatDate } from '../../utils/format';
+
+type Tab = 'overdue' | 'pending';
+
+export function TasksPanel() {
+  const [tab, setTab] = useState<Tab>('overdue');
+  const overdue = tasks.filter((t) => t.overdueDays > 0);
+  const pending = tasks.filter((t) => t.overdueDays === 0 && t.status !== 'Completed');
+  const rows = (tab === 'overdue' ? overdue : pending).slice(0, 5);
+
+  return (
+    <Panel className="h-full">
+      <PanelHeader
+        title="Tasks needing action"
+        subtitle="Assigned across site engineering teams"
+        action={
+        <div className="flex rounded-md border border-ink-200 p-0.5" role="tablist" aria-label="Task filter">
+            {(
+          [
+          ['overdue', `Overdue ${overdue.length}`],
+          ['pending', `Upcoming ${pending.length}`]] as
+          const).
+          map(([key, label]) =>
+          <button
+            key={key}
+            role="tab"
+            aria-selected={tab === key}
+            type="button"
+            onClick={() => setTab(key)}
+            className={twMerge(
+              'rounded px-2 py-1 text-2xs font-semibold transition-colors duration-150',
+              tab === key ? 'bg-ink-900 text-white' : 'text-ink-500 hover:text-ink-900'
+            )}>
+            
+                {label}
+              </button>
+          )}
+          </div>
+        } />
+      
+      <ul className="divide-y divide-ink-100">
+        {rows.map((task) =>
+        <li key={task.id} className="px-4 py-3 transition-colors duration-150 hover:bg-ink-50/60">
+            <div className="flex items-start gap-2.5">
+              <CircleDotIcon
+              className={twMerge(
+                'mt-0.5 h-3.5 w-3.5 shrink-0',
+                task.status === 'Blocked' ? 'text-signal-red' : 'text-ink-300'
+              )}
+              aria-hidden />
+            
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-xs font-semibold text-ink-900">{task.title}</p>
+                <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-2xs text-ink-500">
+                  <span className="font-mono text-ink-400">
+                    {task.projectCode} · WBS {task.wbs}
+                  </span>
+                  <span>{task.assignee}</span>
+                </p>
+              </div>
+              <div className="shrink-0 text-right">
+                <div className="flex items-center justify-end gap-1.5">
+                  <StatusBadge label={task.priority} />
+                  <StatusBadge label={task.status} />
+                </div>
+                <p
+                className={twMerge(
+                  'mt-1.5 flex items-center justify-end gap-1 font-mono text-2xs',
+                  task.overdueDays > 0 ? 'font-semibold text-signal-red' : 'text-ink-500'
+                )}>
+                
+                  <ClockIcon className="h-3 w-3" aria-hidden />
+                  {task.overdueDays > 0 ?
+                `${task.overdueDays}d overdue` :
+                `Due ${formatDate(task.dueDate)}`}
+                </p>
+              </div>
+            </div>
+          </li>
+        )}
+      </ul>
+      <Link
+        to="/tasks"
+        className="mt-auto flex items-center justify-center gap-1.5 border-t border-ink-100 px-4 py-2.5 text-xs font-medium text-ink-600 transition-colors duration-150 hover:bg-ink-50 hover:text-ink-900">
+        
+        Go to task board
+      </Link>
+    </Panel>);
+
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\layout\AppShell.tsx
+==============================
+import React, { useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import { Sidebar } from './Sidebar';
+import { Topbar } from './Topbar';
+
+export function AppShell() {
+  const [navOpen, setNavOpen] = useState(false);
+
+  return (
+    <div className="flex min-h-full w-full bg-canvas">
+      <Sidebar open={navOpen} onClose={() => setNavOpen(false)} />
+      <div className="flex min-w-0 flex-1 flex-col">
+        <Topbar onMenuClick={() => setNavOpen(true)} />
+        <main className="flex-1 px-4 py-5 lg:px-6 lg:py-6">
+          <Outlet />
+        </main>
+      </div>
+    </div>);
+
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\layout\Sidebar.tsx
+==============================
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { XIcon, HardHatIcon, LifeBuoyIcon } from 'lucide-react';
+import { twMerge } from 'tailwind-merge';
+import { primaryNav, secondaryNav, type NavItem } from '../../data/nav';
+
+const badgeTones: Record<string, string> = {
+  critical: 'bg-signal-red text-white',
+  warning: 'bg-safety-400 text-ink-900',
+  neutral: 'bg-ink-700 text-ink-200'
+};
+
+function SidebarLink({ item, onNavigate }: {item: NavItem;onNavigate?: () => void;}) {
+  const Icon = item.icon;
+  return (
+    <NavLink
+      to={item.to}
+      end={item.to === '/'}
+      onClick={onNavigate}
+      className={({ isActive }) =>
+      twMerge(
+        'group relative flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium transition-colors duration-150',
+        isActive ?
+        'bg-ink-800 text-white' :
+        'text-ink-300 hover:bg-ink-800/60 hover:text-white'
+      )
+      }>
+      
+      {({ isActive }) =>
+      <>
+          <span
+          className={twMerge(
+            'absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-safety-400 transition-opacity duration-150',
+            isActive ? 'opacity-100' : 'opacity-0'
+          )}
+          aria-hidden />
+        
+          <Icon
+          className={twMerge('h-4 w-4 shrink-0', isActive ? 'text-safety-400' : 'text-ink-400 group-hover:text-ink-200')}
+          aria-hidden />
+        
+          <span className="flex-1 truncate">{item.label}</span>
+          {item.badge &&
+        <span
+          className={twMerge(
+            'rounded px-1.5 py-0.5 font-mono text-2xs font-semibold leading-none',
+            badgeTones[item.badgeTone ?? 'neutral']
+          )}>
+          
+              {item.badge}
+            </span>
+        }
+        </>
+      }
+    </NavLink>);
+
+}
+
+export function Sidebar({ open, onClose }: {open: boolean;onClose: () => void;}) {
+  return (
+    <>
+      {open &&
+      <div
+        className="fixed inset-0 z-30 bg-ink-950/50 lg:hidden"
+        onClick={onClose}
+        aria-hidden />
+
+      }
+      <aside
+        className={twMerge(
+          'fixed inset-y-0 left-0 z-40 flex w-60 shrink-0 flex-col border-r border-ink-800 bg-ink-900 transition-transform duration-200 ease-out lg:static lg:translate-x-0',
+          open ? 'translate-x-0' : '-translate-x-full'
+        )}
+        aria-label="Primary navigation">
+        
+        <div className="flex items-center gap-2.5 px-4 pb-3 pt-4">
+          <span className="flex h-8 w-8 items-center justify-center rounded bg-safety-400">
+            <HardHatIcon className="h-4.5 w-4.5 text-ink-900" strokeWidth={2.2} aria-hidden />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold leading-tight text-white">Sthapatya</p>
+            <p className="font-mono text-2xs uppercase tracking-wider text-ink-400">Site Ops Suite</p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded p-1 text-ink-400 transition-colors duration-150 hover:bg-ink-800 hover:text-white lg:hidden"
+            aria-label="Close navigation">
+            
+            <XIcon className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="hazard-rule mx-4 h-1 rounded-sm opacity-70" aria-hidden />
+
+        <nav className="mt-4 flex-1 space-y-0.5 overflow-y-auto px-3">
+          <p className="px-2.5 pb-1.5 font-mono text-2xs uppercase tracking-widest text-ink-500">
+            Operations
+          </p>
+          {primaryNav.map((item) =>
+          <SidebarLink key={item.to} item={item} onNavigate={onClose} />
+          )}
+          <p className="px-2.5 pb-1.5 pt-4 font-mono text-2xs uppercase tracking-widest text-ink-500">
+            Workspace
+          </p>
+          {secondaryNav.map((item) =>
+          <SidebarLink key={item.to} item={item} onNavigate={onClose} />
+          )}
+        </nav>
+
+        <div className="border-t border-ink-800 p-3">
+          <div className="rounded-md bg-ink-800/70 p-3">
+            <p className="font-mono text-2xs uppercase tracking-wider text-ink-400">Today on site</p>
+            <p className="mt-1 text-sm text-ink-100">
+              <span className="font-mono font-semibold text-white">841</span> workers ·{' '}
+              <span className="font-mono font-semibold text-white">5</span> active sites
+            </p>
+            <p className="mt-1 text-2xs text-ink-400">DPR cut-off 7:00 PM IST</p>
+          </div>
+          <a
+            href="#support"
+            className="mt-2 flex items-center gap-2 rounded-md px-2.5 py-2 text-xs font-medium text-ink-400 transition-colors duration-150 hover:bg-ink-800 hover:text-white">
+            
+            <LifeBuoyIcon className="h-3.5 w-3.5" aria-hidden />
+            Help & support
+          </a>
+        </div>
+      </aside>
+    </>);
+
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\layout\Topbar.tsx
+==============================
+import React, { useState } from 'react';
+import {
+  MenuIcon,
+  SearchIcon,
+  BellIcon,
+  ChevronDownIcon,
+  PlusIcon,
+  TriangleAlertIcon,
+  PackageIcon,
+  ListChecksIcon } from
+'lucide-react';
+import { Button } from '../ui/Button';
+
+const notifications = [
+{
+  id: 'n1',
+  icon: TriangleAlertIcon,
+  tone: 'text-signal-red',
+  title: 'ISS-1194 raised as blocker',
+  detail: 'Honeycombing at pier P12 · PRJ-2038',
+  time: '41m'
+},
+{
+  id: 'n2',
+  icon: PackageIcon,
+  tone: 'text-safety-500',
+  title: 'TMT 16mm below reorder level',
+  detail: '4.2 MT remaining · PRJ-2041',
+  time: '2h'
+},
+{
+  id: 'n3',
+  icon: ListChecksIcon,
+  tone: 'text-signal-blue',
+  title: 'Cube test task overdue by 5 days',
+  detail: 'Batch B-2214 · PRJ-2041',
+  time: '5h'
+}];
+
+
+export function Topbar({ onMenuClick }: {onMenuClick: () => void;}) {
+  const [openPanel, setOpenPanel] = useState<'bell' | 'user' | null>(null);
+
+  return (
+    <header className="sticky top-0 z-20 flex h-14 items-center gap-3 border-b border-ink-200 bg-white/95 px-4 backdrop-blur lg:px-6">
+      <button
+        type="button"
+        onClick={onMenuClick}
+        className="rounded-md p-1.5 text-ink-600 transition-colors duration-150 hover:bg-ink-100 lg:hidden"
+        aria-label="Open navigation">
+        
+        <MenuIcon className="h-5 w-5" />
+      </button>
+
+      <div className="relative min-w-0 flex-1 max-w-xl">
+        <SearchIcon
+          className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400"
+          aria-hidden />
+        
+        <input
+          type="search"
+          placeholder="Search projects, tasks, drawings, vouchers…"
+          aria-label="Global search"
+          className="h-9 w-full rounded-md border border-ink-200 bg-ink-50/60 pl-9 pr-16 text-sm text-ink-800 placeholder:text-ink-400 transition-colors duration-150 focus:border-ink-300 focus:bg-white focus:outline-none" />
+        
+        <kbd className="pointer-events-none absolute right-2.5 top-1/2 hidden -translate-y-1/2 rounded border border-ink-200 bg-white px-1.5 py-0.5 font-mono text-2xs text-ink-400 md:block">
+          ⌘K
+        </kbd>
+      </div>
+
+      <div className="ml-auto flex items-center gap-2">
+        <Button variant="primary" size="sm" className="hidden sm:inline-flex">
+          <PlusIcon className="h-3.5 w-3.5" aria-hidden />
+          Log daily report
+        </Button>
+
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setOpenPanel(openPanel === 'bell' ? null : 'bell')}
+            className="relative rounded-md p-2 text-ink-600 transition-colors duration-150 hover:bg-ink-100 hover:text-ink-900"
+            aria-label="Notifications"
+            aria-expanded={openPanel === 'bell'}>
+            
+            <BellIcon className="h-4.5 w-4.5" />
+            <span className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-signal-red px-1 font-mono text-[10px] font-semibold leading-none text-white">
+              6
+            </span>
+          </button>
+          {openPanel === 'bell' &&
+          <div className="absolute right-0 top-11 w-80 overflow-hidden rounded-lg border border-ink-200 bg-white shadow-pop">
+              <div className="flex items-center justify-between border-b border-ink-100 px-3 py-2.5">
+                <p className="text-sm font-semibold text-ink-900">Notifications</p>
+                <span className="font-mono text-2xs text-ink-400">6 unread</span>
+              </div>
+              <ul>
+                {notifications.map((n) =>
+              <li key={n.id} className="border-b border-ink-100 last:border-0">
+                    <button
+                  type="button"
+                  className="flex w-full items-start gap-2.5 px-3 py-2.5 text-left transition-colors duration-150 hover:bg-ink-50">
+                  
+                      <n.icon className={`mt-0.5 h-4 w-4 shrink-0 ${n.tone}`} aria-hidden />
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-xs font-medium text-ink-900">{n.title}</span>
+                        <span className="block truncate text-2xs text-ink-500">{n.detail}</span>
+                      </span>
+                      <span className="font-mono text-2xs text-ink-400">{n.time}</span>
+                    </button>
+                  </li>
+              )}
+              </ul>
+              <a
+              href="#notifications"
+              className="block border-t border-ink-100 px-3 py-2.5 text-center text-xs font-medium text-ink-600 hover:bg-ink-50 hover:text-ink-900">
+              
+                View all notifications
+              </a>
+            </div>
+          }
+        </div>
+
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setOpenPanel(openPanel === 'user' ? null : 'user')}
+            className="flex items-center gap-2 rounded-md py-1 pl-1 pr-1.5 transition-colors duration-150 hover:bg-ink-100"
+            aria-label="User menu"
+            aria-expanded={openPanel === 'user'}>
+            
+            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-steel-600 font-mono text-xs font-semibold text-white">
+              RD
+            </span>
+            <span className="hidden text-left md:block">
+              <span className="block text-xs font-semibold leading-tight text-ink-900">R. Deshmukh</span>
+              <span className="block text-2xs leading-tight text-ink-500">Project Manager</span>
+            </span>
+            <ChevronDownIcon className="hidden h-3.5 w-3.5 text-ink-400 md:block" aria-hidden />
+          </button>
+          {openPanel === 'user' &&
+          <div className="absolute right-0 top-12 w-56 overflow-hidden rounded-lg border border-ink-200 bg-white shadow-pop">
+              <div className="border-b border-ink-100 px-3 py-2.5">
+                <p className="text-sm font-semibold text-ink-900">Rohit Deshmukh</p>
+                <p className="text-2xs text-ink-500">rohit.d@sthapatya.co.in</p>
+              </div>
+              <ul className="py-1 text-xs text-ink-700">
+                {['My profile', 'Switch role', 'Notification preferences', 'Sign out'].map((label) =>
+              <li key={label}>
+                    <button
+                  type="button"
+                  className="w-full px-3 py-2 text-left transition-colors duration-150 hover:bg-ink-50 hover:text-ink-900">
+                  
+                      {label}
+                    </button>
+                  </li>
+              )}
+              </ul>
+            </div>
+          }
+        </div>
+      </div>
+    </header>);
+
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\ui\Button.tsx
+==============================
+import React from 'react';
+import { twMerge } from 'tailwind-merge';
+
+type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
+type Size = 'sm' | 'md';
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: Variant;
+  size?: Size;
+  children: React.ReactNode;
+}
+
+const variants: Record<Variant, string> = {
+  primary: 'bg-ink-900 text-white hover:bg-ink-800 border border-ink-900',
+  secondary: 'bg-white text-ink-700 border border-ink-200 hover:bg-ink-50 hover:text-ink-900',
+  ghost: 'bg-transparent text-ink-600 border border-transparent hover:bg-ink-100 hover:text-ink-900',
+  danger: 'bg-signal-red text-white border border-signal-red hover:bg-[#a53125]'
+};
+
+const sizes: Record<Size, string> = {
+  sm: 'h-8 px-2.5 text-xs gap-1.5',
+  md: 'h-9 px-3.5 text-sm gap-2'
+};
+
+export function Button({ variant = 'secondary', size = 'sm', className, children, ...rest }: ButtonProps) {
+  return (
+    <button
+      type="button"
+      className={twMerge(
+        'inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium transition-colors duration-150',
+        variants[variant],
+        sizes[size],
+        className
+      )}
+      {...rest}>
+      
+      {children}
+    </button>);
+
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\ui\FilterBar.tsx
+==============================
+import React from 'react';
+import { SearchIcon, SlidersHorizontalIcon } from 'lucide-react';
+import { twMerge } from 'tailwind-merge';
+import { Button } from './Button';
+
+interface FilterBarProps {
+  searchPlaceholder: string;
+  filters: string[];
+  active: string;
+  onChange: (value: string) => void;
+  query: string;
+  onQueryChange: (value: string) => void;
+  trailing?: React.ReactNode;
+}
+
+export function FilterBar({
+  searchPlaceholder,
+  filters,
+  active,
+  onChange,
+  query,
+  onQueryChange,
+  trailing
+}: FilterBarProps) {
+  return (
+    <div className="mb-4 flex flex-wrap items-center gap-2 rounded-lg border border-ink-200 bg-white px-3 py-2.5 shadow-panel">
+      <div className="relative min-w-[220px] flex-1">
+        <SearchIcon
+          className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink-400"
+          aria-hidden />
+        
+        <input
+          value={query}
+          onChange={(e) => onQueryChange(e.target.value)}
+          placeholder={searchPlaceholder}
+          aria-label={searchPlaceholder}
+          className="h-8 w-full rounded-md border border-ink-200 bg-ink-50/60 pl-8 pr-3 text-xs text-ink-800 placeholder:text-ink-400 focus:border-ink-300 focus:bg-white focus:outline-none" />
+        
+      </div>
+      <div className="flex flex-wrap items-center gap-1" role="group" aria-label="Filters">
+        {filters.map((f) =>
+        <button
+          key={f}
+          type="button"
+          onClick={() => onChange(f)}
+          aria-pressed={active === f}
+          className={twMerge(
+            'rounded-md border px-2.5 py-1.5 text-2xs font-semibold transition-colors duration-150',
+            active === f ?
+            'border-ink-900 bg-ink-900 text-white' :
+            'border-ink-200 bg-white text-ink-600 hover:bg-ink-50 hover:text-ink-900'
+          )}>
+          
+            {f}
+          </button>
+        )}
+      </div>
+      {trailing ??
+      <Button variant="secondary" size="sm">
+          <SlidersHorizontalIcon className="h-3.5 w-3.5" aria-hidden />
+          More filters
+        </Button>
+      }
+    </div>);
+
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\ui\PageHeader.tsx
+==============================
+import React from 'react';
+
+interface PageHeaderProps {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  actions?: React.ReactNode;
+  children?: React.ReactNode;
+}
+
+export function PageHeader({ eyebrow, title, description, actions, children }: PageHeaderProps) {
+  return (
+    <header className="mb-5 flex flex-wrap items-end justify-between gap-4">
+      <div className="min-w-0">
+        {eyebrow &&
+        <p className="mb-1 font-mono text-2xs uppercase tracking-widest text-ink-400">{eyebrow}</p>
+        }
+        <h1 className="text-xl font-semibold tracking-tight text-ink-900">{title}</h1>
+        {description && <p className="mt-1 max-w-2xl text-sm text-ink-500">{description}</p>}
+        {children}
+      </div>
+      {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
+    </header>);
+
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\ui\Panel.tsx
+==============================
+import React from 'react';
+import { twMerge } from 'tailwind-merge';
+
+interface PanelProps {
+  children: React.ReactNode;
+  className?: string;
+  as?: 'section' | 'div' | 'article';
+}
+
+export function Panel({ children, className, as = 'section' }: PanelProps) {
+  const Tag = as;
+  return (
+    <Tag
+      className={twMerge(
+        'flex flex-col rounded-lg border border-ink-200 bg-white shadow-panel',
+        className
+      )}>
+      
+      {children}
+    </Tag>);
+
+}
+
+interface PanelHeaderProps {
+  title: string;
+  subtitle?: string;
+  action?: React.ReactNode;
+  className?: string;
+}
+
+export function PanelHeader({ title, subtitle, action, className }: PanelHeaderProps) {
+  return (
+    <header
+      className={twMerge(
+        'flex items-start justify-between gap-4 border-b border-ink-100 px-4 py-3',
+        className
+      )}>
+      
+      <div className="min-w-0">
+        <h2 className="truncate text-sm font-semibold tracking-tight text-ink-900">{title}</h2>
+        {subtitle && <p className="mt-0.5 truncate text-xs text-ink-500">{subtitle}</p>}
+      </div>
+      {action && <div className="shrink-0">{action}</div>}
+    </header>);
+
+}
+
+export function PanelFooterLink({
+  children,
+  onClick
+
+
+
+}: {children: React.ReactNode;onClick?: () => void;}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="mt-auto flex w-full items-center justify-center gap-1.5 border-t border-ink-100 px-4 py-2.5 text-xs font-medium text-ink-600 transition-colors duration-150 hover:bg-ink-50 hover:text-ink-900">
+      
+      {children}
+    </button>);
+
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\ui\ProgressBar.tsx
+==============================
+import React from 'react';
+import { twMerge } from 'tailwind-merge';
+
+interface ProgressBarProps {
+  value: number;
+  /** Optional planned value rendered as a target marker. */
+  planned?: number;
+  tone?: 'safety' | 'green' | 'red' | 'steel';
+  className?: string;
+  label?: string;
+}
+
+const fill: Record<string, string> = {
+  safety: 'bg-safety-400',
+  green: 'bg-signal-green',
+  red: 'bg-signal-red',
+  steel: 'bg-steel-500'
+};
+
+export function ProgressBar({ value, planned, tone = 'safety', className, label }: ProgressBarProps) {
+  return (
+    <div
+      className={twMerge('relative h-1.5 w-full overflow-hidden rounded-full bg-ink-100', className)}
+      role="progressbar"
+      aria-valuenow={Math.round(value)}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-label={label ?? 'Progress'}>
+      
+      <div
+        className={twMerge('h-full rounded-full', fill[tone])}
+        style={{ width: `${Math.min(100, Math.max(0, value))}%` }} />
+      
+      {planned !== undefined &&
+      <span
+        className="absolute top-0 h-full w-px bg-ink-700"
+        style={{ left: `${Math.min(100, Math.max(0, planned))}%` }}
+        aria-hidden />
+
+      }
+    </div>);
+
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\ui\StatusBadge.tsx
+==============================
+import React from 'react';
+import { twMerge } from 'tailwind-merge';
+
+type Tone = 'green' | 'red' | 'amber' | 'blue' | 'neutral';
+
+const toneMap: Record<Tone, string> = {
+  green: 'bg-signal-greenSoft text-signal-green border-signal-green/20',
+  red: 'bg-signal-redSoft text-signal-red border-signal-red/20',
+  amber: 'bg-signal-amberSoft text-signal-amber border-signal-amber/20',
+  blue: 'bg-signal-blueSoft text-signal-blue border-signal-blue/20',
+  neutral: 'bg-ink-50 text-ink-600 border-ink-200'
+};
+
+const labelTone: Record<string, Tone> = {
+  // projects
+  'On Track': 'green',
+  'At Risk': 'amber',
+  Delayed: 'red',
+  Completed: 'blue',
+  Planning: 'neutral',
+  // tasks
+  'In Progress': 'blue',
+  'Not Started': 'neutral',
+  Blocked: 'red',
+  Review: 'amber',
+  // priority / severity
+  Critical: 'red',
+  Blocker: 'red',
+  High: 'amber',
+  Major: 'amber',
+  Medium: 'blue',
+  Minor: 'neutral',
+  Low: 'neutral',
+  // materials
+  Healthy: 'green',
+  Ordered: 'blue',
+  // issues
+  Open: 'red',
+  'In Review': 'amber',
+  Resolved: 'green',
+  // expenses
+  Approved: 'green',
+  Pending: 'amber',
+  Rejected: 'red',
+  Reimbursed: 'blue',
+  // documents
+  'For Review': 'amber',
+  Superseded: 'neutral'
+};
+
+export function StatusBadge({
+  label,
+  tone,
+  className
+
+
+
+
+}: {label: string;tone?: Tone;className?: string;}) {
+  const resolved = tone ?? labelTone[label] ?? 'neutral';
+  return (
+    <span
+      className={twMerge(
+        'inline-flex items-center whitespace-nowrap rounded border px-1.5 py-0.5 text-2xs font-semibold',
+        toneMap[resolved],
+        className
+      )}>
+      
+      {label}
+    </span>);
+
+}
+
+export function Dot({ tone }: {tone: Tone;}) {
+  const bg: Record<Tone, string> = {
+    green: 'bg-signal-green',
+    red: 'bg-signal-red',
+    amber: 'bg-safety-400',
+    blue: 'bg-signal-blue',
+    neutral: 'bg-ink-300'
+  };
+  return <span className={twMerge('h-1.5 w-1.5 shrink-0 rounded-full', bg[tone])} aria-hidden />;
+}
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\components\ui\Table.tsx
+==============================
+import React from 'react';
+import { twMerge } from 'tailwind-merge';
+
+export function TableWrap({ children, className }: {children: React.ReactNode;className?: string;}) {
+  return (
+    <div className={twMerge('w-full overflow-x-auto', className)}>
+      <table className="w-full min-w-[720px] border-collapse text-sm">{children}</table>
+    </div>);
+
+}
+
+export function Th({
+  children,
+  align = 'left',
+  className
+
+
+
+
+}: {children?: React.ReactNode;align?: 'left' | 'right' | 'center';className?: string;}) {
+  return (
+    <th
+      scope="col"
+      className={twMerge(
+        'sticky top-0 z-10 whitespace-nowrap border-b border-ink-200 bg-ink-50 px-4 py-2.5 text-2xs font-semibold uppercase tracking-wider text-ink-500',
+        align === 'right' && 'text-right',
+        align === 'center' && 'text-center',
+        align === 'left' && 'text-left',
+        className
+      )}>
+      
+      {children}
+    </th>);
+
+}
+
+export function Td({
+  children,
+  align = 'left',
+  className
+
+
+
+
+}: {children?: React.ReactNode;align?: 'left' | 'right' | 'center';className?: string;}) {
+  return (
+    <td
+      className={twMerge(
+        'border-b border-ink-100 px-4 py-3 align-middle text-ink-700',
+        align === 'right' && 'text-right',
+        align === 'center' && 'text-center',
+        className
+      )}>
+      
+      {children}
+    </td>);
+
+}
+
+export function Tr({ children, className }: {children: React.ReactNode;className?: string;}) {
+  return (
+    <tr className={twMerge('transition-colors duration-150 hover:bg-ink-50/70', className)}>
+      {children}
+    </tr>);
+
+}
+

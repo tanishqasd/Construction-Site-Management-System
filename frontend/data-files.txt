@@ -1,0 +1,1048 @@
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\data\activity.ts
+==============================
+import type { ActivityEvent, AlertItem } from '../types';
+
+export const activityFeed: ActivityEvent[] = [
+{
+  id: 'a1',
+  kind: 'progress',
+  actor: 'A. Kulkarni',
+  role: 'Site Engineer',
+  message: 'Logged DPR for 18 Aug — 14th slab reinforcement 62% complete, 39 workers deployed.',
+  projectCode: 'PRJ-2041',
+  time: '12 min ago'
+},
+{
+  id: 'a2',
+  kind: 'issue',
+  actor: 'V. Joshi',
+  role: 'Site Engineer',
+  message: 'Raised ISS-1194 — honeycombing in pier P12 shaft, flagged as blocker for pour at P14.',
+  projectCode: 'PRJ-2038',
+  time: '41 min ago'
+},
+{
+  id: 'a3',
+  kind: 'material',
+  actor: 'T. Gawde',
+  role: 'Stores',
+  message: 'Recorded GRN for 386 cum M40 RMC from Suryodaya; balance stock reconciled.',
+  projectCode: 'PRJ-2038',
+  time: '1 hr ago'
+},
+{
+  id: 'a4',
+  kind: 'photo',
+  actor: 'D. Patil',
+  role: 'Site Engineer',
+  message: 'Uploaded 12 site photos — basement waterproofing east wall, before/after treatment.',
+  projectCode: 'PRJ-2029',
+  time: '2 hrs ago'
+},
+{
+  id: 'a5',
+  kind: 'labour',
+  actor: 'S. Jadhav',
+  role: 'Supervisor',
+  message: 'Marked attendance for Crew D & E — 61 of 88 present, 27 absent against plan.',
+  projectCode: 'PRJ-2029',
+  time: '3 hrs ago'
+},
+{
+  id: 'a6',
+  kind: 'expense',
+  actor: 'R. Deshmukh',
+  role: 'Project Manager',
+  message: 'Approved EXP-8839 — crawler crane hire ₹6.85 L for 11 days.',
+  projectCode: 'PRJ-2038',
+  time: '4 hrs ago'
+},
+{
+  id: 'a7',
+  kind: 'document',
+  actor: 'A. Kulkarni',
+  role: 'Site Engineer',
+  message: 'Published Structural GA Level 14–16 Rev-C; Rev-B marked superseded.',
+  projectCode: 'PRJ-2041',
+  time: '5 hrs ago'
+},
+{
+  id: 'a8',
+  kind: 'progress',
+  actor: 'M. Shaikh',
+  role: 'Site Engineer',
+  message: 'Closed task 3.1.04 — clarifier raft PCC levelling grid C4–C9 complete.',
+  projectCode: 'PRJ-2052',
+  time: 'Yesterday, 6:40 PM'
+}];
+
+
+export const alerts: AlertItem[] = [
+{
+  id: 'al1',
+  level: 'critical',
+  title: 'Concrete pour at P14 blocked',
+  detail: 'HT line shifting approval pending 14 days; pour window slips to 24 Aug.',
+  projectCode: 'PRJ-2038',
+  meta: 'Critical path · 4 days lost'
+},
+{
+  id: 'al2',
+  level: 'critical',
+  title: 'TMT 16mm stock below one day of consumption',
+  detail: '4.2 MT against weekly draw of 18.6 MT. Raise PO to Vishwa Steel today.',
+  projectCode: 'PRJ-2041',
+  meta: 'Reorder level 12 MT'
+},
+{
+  id: 'al3',
+  level: 'warning',
+  title: 'Aurum Residency 12% behind plan',
+  detail: 'Finishing works slipping; 11 open issues and 94% budget consumed at 77% progress.',
+  projectCode: 'PRJ-2029',
+  meta: 'Cost overrun risk'
+},
+{
+  id: 'al4',
+  level: 'warning',
+  title: 'Labour turnout 31% short at Aurum',
+  detail: '61 of 88 masons and plasterers present for a second consecutive day.',
+  projectCode: 'PRJ-2029',
+  meta: 'Ekveera Enterprises'
+},
+{
+  id: 'al5',
+  level: 'info',
+  title: 'Monsoon advisory — heavy rain 20–22 Aug',
+  detail: 'Plan slab pours before 20 Aug; secure excavation slopes at Nashik site.',
+  projectCode: 'PRJ-2052',
+  meta: 'IMD orange alert'
+}];
+
+
+export const sitePhotos = [
+{
+  id: 'ph1',
+  caption: '14th slab reinforcement — bay 3',
+  projectCode: 'PRJ-2041',
+  time: 'Today, 09:12',
+  url: "/45b1e157-1dd9-4d6c-9702-bc3e72c7e960.jpg"
+},
+{
+  id: 'ph2',
+  caption: 'Pier P12 shaft after de-shuttering',
+  projectCode: 'PRJ-2038',
+  time: 'Today, 08:40',
+  url: "/15c8d9af-720d-4a0e-8472-ee5dd9dd01c3.jpg"
+},
+{
+  id: 'ph3',
+  caption: 'Basement waterproofing — east wall',
+  projectCode: 'PRJ-2029',
+  time: 'Today, 07:55',
+  url: "/00624b1a-6502-4cc2-8cf8-5c0b1cfde9cb.jpg"
+},
+{
+  id: 'ph4',
+  caption: 'Clarifier raft PCC levelling',
+  projectCode: 'PRJ-2052',
+  time: 'Yesterday, 17:20',
+  url: "/1ef49646-e8f4-4825-8842-6c91979addc1.jpg"
+}];
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\data\documents.ts
+==============================
+import type { DocumentItem } from '../types';
+
+export const documents: DocumentItem[] = [
+{
+  id: 'd1',
+  name: 'Tower B — Structural GA Level 14–16',
+  type: 'Drawing',
+  projectCode: 'PRJ-2041',
+  revision: 'Rev-C',
+  size: '4.8 MB',
+  uploadedBy: 'A. Kulkarni',
+  uploadedOn: '2026-08-17',
+  status: 'Approved'
+},
+{
+  id: 'd2',
+  name: 'Pier Cap Reinforcement Detail P12–P18',
+  type: 'Drawing',
+  projectCode: 'PRJ-2038',
+  revision: 'Rev-E',
+  size: '6.2 MB',
+  uploadedBy: 'V. Joshi',
+  uploadedOn: '2026-08-16',
+  status: 'For Review'
+},
+{
+  id: 'd3',
+  name: 'Fire NOC Application — Aurum Phase 1',
+  type: 'Permit',
+  projectCode: 'PRJ-2029',
+  revision: 'Rev-B',
+  size: '1.1 MB',
+  uploadedBy: 'R. Deshmukh',
+  uploadedOn: '2026-08-13',
+  status: 'For Review'
+},
+{
+  id: 'd4',
+  name: 'Concrete Cube Test Report — Batch B-2209',
+  type: 'Certificate',
+  projectCode: 'PRJ-2041',
+  revision: '—',
+  size: '640 KB',
+  uploadedBy: 'QA Lab — Suryodaya',
+  uploadedOn: '2026-08-12',
+  status: 'Approved'
+},
+{
+  id: 'd5',
+  name: 'Monthly Progress Report — July 2026',
+  type: 'Report',
+  projectCode: 'PRJ-2052',
+  revision: 'Final',
+  size: '3.4 MB',
+  uploadedBy: 'M. Shaikh',
+  uploadedOn: '2026-08-05',
+  status: 'Approved'
+},
+{
+  id: 'd6',
+  name: 'Labour Supply Agreement — Ekveera Enterprises',
+  type: 'Contract',
+  projectCode: 'PRJ-2029',
+  revision: 'Signed',
+  size: '2.0 MB',
+  uploadedBy: 'Admin — L. Fernandes',
+  uploadedOn: '2026-07-28',
+  status: 'Approved'
+},
+{
+  id: 'd7',
+  name: 'Tower B — Structural GA Level 14–16',
+  type: 'Drawing',
+  projectCode: 'PRJ-2041',
+  revision: 'Rev-B',
+  size: '4.6 MB',
+  uploadedBy: 'A. Kulkarni',
+  uploadedOn: '2026-07-19',
+  status: 'Superseded'
+},
+{
+  id: 'd8',
+  name: 'Warehouse Unit 4 — Foundation Layout',
+  type: 'Drawing',
+  projectCode: 'PRJ-2057',
+  revision: 'Rev-A',
+  size: '3.1 MB',
+  uploadedBy: 'K. Rane',
+  uploadedOn: '2026-07-15',
+  status: 'Approved'
+}];
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\data\expenses.ts
+==============================
+import type { Expense } from '../types';
+
+export const expenses: Expense[] = [
+{
+  id: 'e1',
+  voucher: 'EXP-8841',
+  category: 'Material Purchase',
+  projectCode: 'PRJ-2041',
+  amount: 1842000,
+  date: '2026-08-17',
+  raisedBy: 'A. Kulkarni',
+  status: 'Pending',
+  note: 'TMT 16mm — 30 MT against PO/4412'
+},
+{
+  id: 'e2',
+  voucher: 'EXP-8839',
+  category: 'Equipment Hire',
+  projectCode: 'PRJ-2038',
+  amount: 685000,
+  date: '2026-08-16',
+  raisedBy: 'V. Joshi',
+  status: 'Approved',
+  note: 'Crawler crane 80T — 11 days'
+},
+{
+  id: 'e3',
+  voucher: 'EXP-8836',
+  category: 'Labour Payment',
+  projectCode: 'PRJ-2029',
+  amount: 2410000,
+  date: '2026-08-15',
+  raisedBy: 'D. Patil',
+  status: 'Approved',
+  note: 'Fortnightly RA bill — Ekveera Enterprises'
+},
+{
+  id: 'e4',
+  voucher: 'EXP-8834',
+  category: 'Site Overheads',
+  projectCode: 'PRJ-2052',
+  amount: 96400,
+  date: '2026-08-14',
+  raisedBy: 'M. Shaikh',
+  status: 'Reimbursed',
+  note: 'Diesel for DG set & dewatering pumps'
+},
+{
+  id: 'e5',
+  voucher: 'EXP-8830',
+  category: 'Statutory & Fees',
+  projectCode: 'PRJ-2029',
+  amount: 315000,
+  date: '2026-08-13',
+  raisedBy: 'R. Deshmukh',
+  status: 'Pending',
+  note: 'Fire NOC resubmission fee + scrutiny charges'
+},
+{
+  id: 'e6',
+  voucher: 'EXP-8827',
+  category: 'Transport',
+  projectCode: 'PRJ-2038',
+  amount: 128500,
+  date: '2026-08-12',
+  raisedBy: 'Stores — T. Gawde',
+  status: 'Rejected',
+  note: 'Duplicate freight claim against LR-2291'
+},
+{
+  id: 'e7',
+  voucher: 'EXP-8824',
+  category: 'Safety & PPE',
+  projectCode: 'PRJ-2041',
+  amount: 74200,
+  date: '2026-08-11',
+  raisedBy: 'HSE — N. Bhosale',
+  status: 'Approved',
+  note: 'Full body harnesses (40 nos) & helmets'
+},
+{
+  id: 'e8',
+  voucher: 'EXP-8820',
+  category: 'Material Purchase',
+  projectCode: 'PRJ-2057',
+  amount: 542000,
+  date: '2026-08-10',
+  raisedBy: 'K. Rane',
+  status: 'Approved',
+  note: 'PCC aggregate & sand — foundation works'
+}];
+
+
+export const expenseByCategory = [
+{ category: 'Material', amount: 1284 },
+{ category: 'Labour', amount: 862 },
+{ category: 'Equipment', amount: 431 },
+{ category: 'Overheads', amount: 196 },
+{ category: 'Statutory', amount: 88 }];
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\data\issues.ts
+==============================
+import type { Issue } from '../types';
+
+export const issues: Issue[] = [
+{
+  id: 'i1',
+  ref: 'ISS-1194',
+  title: 'Honeycombing observed in pier P12 shaft after de-shuttering',
+  projectCode: 'PRJ-2038',
+  location: 'Chainage 4+120, Pier P12',
+  severity: 'Blocker',
+  status: 'Open',
+  category: 'Quality',
+  raisedBy: 'V. Joshi',
+  raisedOn: '2026-08-16',
+  ageDays: 2
+},
+{
+  id: 'i2',
+  ref: 'ISS-1191',
+  title: 'Edge protection missing on 13th floor south periphery',
+  projectCode: 'PRJ-2041',
+  location: 'Tower B, Level 13',
+  severity: 'Blocker',
+  status: 'In Review',
+  category: 'Safety',
+  raisedBy: 'HSE — N. Bhosale',
+  raisedOn: '2026-08-15',
+  ageDays: 3
+},
+{
+  id: 'i3',
+  ref: 'ISS-1188',
+  title: 'Ground water ingress at basement raft joint — dewatering inadequate',
+  projectCode: 'PRJ-2029',
+  location: 'Tower 3 basement, grid E2',
+  severity: 'Major',
+  status: 'Open',
+  category: 'Execution',
+  raisedBy: 'D. Patil',
+  raisedOn: '2026-08-12',
+  ageDays: 6
+},
+{
+  id: 'i4',
+  ref: 'ISS-1186',
+  title: 'Structural drawing Rev-D conflicts with executed column layout',
+  projectCode: 'PRJ-2029',
+  location: 'Tower 2, Level 8',
+  severity: 'Blocker',
+  status: 'Open',
+  category: 'Design',
+  raisedBy: 'R. Deshmukh',
+  raisedOn: '2026-08-10',
+  ageDays: 8
+},
+{
+  id: 'i5',
+  ref: 'ISS-1183',
+  title: 'Utility shifting pending — HT line over pier P16',
+  projectCode: 'PRJ-2038',
+  location: 'Chainage 4+310',
+  severity: 'Blocker',
+  status: 'Open',
+  category: 'Approvals',
+  raisedBy: 'S. Nair',
+  raisedOn: '2026-08-04',
+  ageDays: 14
+},
+{
+  id: 'i6',
+  ref: 'ISS-1180',
+  title: 'Cube strength shortfall in batch B-2209 (24.6 MPa @ 7 day)',
+  projectCode: 'PRJ-2041',
+  location: 'Tower B, Level 12 slab',
+  severity: 'Major',
+  status: 'In Review',
+  category: 'Quality',
+  raisedBy: 'A. Kulkarni',
+  raisedOn: '2026-08-08',
+  ageDays: 10
+},
+{
+  id: 'i7',
+  ref: 'ISS-1176',
+  title: 'Access road washout after rainfall — material movement halted',
+  projectCode: 'PRJ-2052',
+  location: 'Site entry gate 2',
+  severity: 'Minor',
+  status: 'Resolved',
+  category: 'Execution',
+  raisedBy: 'M. Shaikh',
+  raisedOn: '2026-08-02',
+  ageDays: 16
+},
+{
+  id: 'i8',
+  ref: 'ISS-1172',
+  title: 'Plaster surface undulation beyond tolerance — Wing C',
+  projectCode: 'PRJ-2029',
+  location: 'Tower 1, Levels 4–6',
+  severity: 'Minor',
+  status: 'In Review',
+  category: 'Quality',
+  raisedBy: 'D. Patil',
+  raisedOn: '2026-07-30',
+  ageDays: 19
+}];
+
+
+export const openIssues = issues.filter((i) => i.status !== 'Resolved');
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\data\labour.ts
+==============================
+import type { LabourRecord } from '../types';
+
+export const labourRecords: LabourRecord[] = [
+{
+  id: 'l1',
+  crew: 'Crew A — Bar Benders',
+  contractor: 'Shivneri Labour Contractors',
+  projectCode: 'PRJ-2041',
+  trade: 'Steel Fixing',
+  strength: 42,
+  present: 39,
+  shift: 'Day',
+  supervisor: 'B. Kadam',
+  dailyWage: 780
+},
+{
+  id: 'l2',
+  crew: 'Crew B — Carpenters',
+  contractor: 'Shivneri Labour Contractors',
+  projectCode: 'PRJ-2041',
+  trade: 'Shuttering',
+  strength: 36,
+  present: 31,
+  shift: 'Day',
+  supervisor: 'B. Kadam',
+  dailyWage: 820
+},
+{
+  id: 'l3',
+  crew: 'Crew C — Concreting (Night)',
+  contractor: 'Suryodaya Manpower',
+  projectCode: 'PRJ-2038',
+  trade: 'Concreting',
+  strength: 54,
+  present: 54,
+  shift: 'Night',
+  supervisor: 'I. Ansari',
+  dailyWage: 900
+},
+{
+  id: 'l4',
+  crew: 'Crew D — Masons',
+  contractor: 'Ekveera Enterprises',
+  projectCode: 'PRJ-2029',
+  trade: 'Blockwork',
+  strength: 48,
+  present: 33,
+  shift: 'Day',
+  supervisor: 'S. Jadhav',
+  dailyWage: 760
+},
+{
+  id: 'l5',
+  crew: 'Crew E — Plasterers',
+  contractor: 'Ekveera Enterprises',
+  projectCode: 'PRJ-2029',
+  trade: 'Plaster',
+  strength: 40,
+  present: 28,
+  shift: 'Day',
+  supervisor: 'S. Jadhav',
+  dailyWage: 745
+},
+{
+  id: 'l6',
+  crew: 'Crew F — Earthwork & Excavation',
+  contractor: 'Godavari Infra Labour',
+  projectCode: 'PRJ-2052',
+  trade: 'Earthwork',
+  strength: 30,
+  present: 30,
+  shift: 'Day',
+  supervisor: 'R. Wagh',
+  dailyWage: 700
+},
+{
+  id: 'l7',
+  crew: 'Crew G — Helpers',
+  contractor: 'Godavari Infra Labour',
+  projectCode: 'PRJ-2057',
+  trade: 'General',
+  strength: 26,
+  present: 22,
+  shift: 'Day',
+  supervisor: 'R. Wagh',
+  dailyWage: 620
+}];
+
+
+export const attendanceTrend = [
+{ day: 'Wed', present: 812, absent: 96 },
+{ day: 'Thu', present: 838, absent: 70 },
+{ day: 'Fri', present: 795, absent: 113 },
+{ day: 'Sat', present: 861, absent: 47 },
+{ day: 'Mon', present: 704, absent: 204 },
+{ day: 'Tue', present: 237, absent: 39 }];
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\data\materials.ts
+==============================
+import type { Material } from '../types';
+
+export const materials: Material[] = [
+{
+  id: 'm1',
+  name: 'TMT Steel Bars — Fe500D, 16mm',
+  unit: 'MT',
+  projectCode: 'PRJ-2041',
+  inStock: 4.2,
+  reorderLevel: 12,
+  consumedThisWeek: 18.6,
+  state: 'Critical',
+  supplier: 'Vishwa Steel Traders',
+  lastDelivery: '2026-08-11',
+  rate: 61500
+},
+{
+  id: 'm2',
+  name: 'OPC 53 Grade Cement',
+  unit: 'Bags',
+  projectCode: 'PRJ-2038',
+  inStock: 310,
+  reorderLevel: 800,
+  consumedThisWeek: 1240,
+  state: 'Critical',
+  supplier: 'Konark Cement Depot',
+  lastDelivery: '2026-08-13',
+  rate: 372
+},
+{
+  id: 'm3',
+  name: 'Ready Mix Concrete — M40',
+  unit: 'cum',
+  projectCode: 'PRJ-2038',
+  inStock: 0,
+  reorderLevel: 0,
+  consumedThisWeek: 386,
+  state: 'Ordered',
+  supplier: 'Suryodaya RMC',
+  lastDelivery: '2026-08-17',
+  rate: 6250
+},
+{
+  id: 'm4',
+  name: 'Aggregate 20mm',
+  unit: 'brass',
+  projectCode: 'PRJ-2029',
+  inStock: 9,
+  reorderLevel: 15,
+  consumedThisWeek: 22,
+  state: 'Low',
+  supplier: 'Patil Quarry Works',
+  lastDelivery: '2026-08-09',
+  rate: 5400
+},
+{
+  id: 'm5',
+  name: 'AAC Blocks 200mm',
+  unit: 'Nos',
+  projectCode: 'PRJ-2029',
+  inStock: 1860,
+  reorderLevel: 2500,
+  consumedThisWeek: 3400,
+  state: 'Low',
+  supplier: 'Buildmate AAC',
+  lastDelivery: '2026-08-12',
+  rate: 78
+},
+{
+  id: 'm6',
+  name: 'River Sand (washed)',
+  unit: 'brass',
+  projectCode: 'PRJ-2052',
+  inStock: 24,
+  reorderLevel: 12,
+  consumedThisWeek: 8,
+  state: 'Healthy',
+  supplier: 'Godavari Sand Suppliers',
+  lastDelivery: '2026-08-15',
+  rate: 7100
+},
+{
+  id: 'm7',
+  name: 'Shuttering Plywood 12mm',
+  unit: 'Sheets',
+  projectCode: 'PRJ-2041',
+  inStock: 420,
+  reorderLevel: 150,
+  consumedThisWeek: 60,
+  state: 'Healthy',
+  supplier: 'Anand Ply & Hardware',
+  lastDelivery: '2026-08-06',
+  rate: 1180
+},
+{
+  id: 'm8',
+  name: 'Bitumen VG-30',
+  unit: 'MT',
+  projectCode: 'PRJ-2038',
+  inStock: 6,
+  reorderLevel: 10,
+  consumedThisWeek: 0,
+  state: 'Low',
+  supplier: 'Highway Bitumen Co.',
+  lastDelivery: '2026-07-29',
+  rate: 48900
+},
+{
+  id: 'm9',
+  name: 'Waterproofing Membrane — APP 3mm',
+  unit: 'Rolls',
+  projectCode: 'PRJ-2029',
+  inStock: 12,
+  reorderLevel: 40,
+  consumedThisWeek: 55,
+  state: 'Critical',
+  supplier: 'Seal-Tech India',
+  lastDelivery: '2026-08-08',
+  rate: 3250
+},
+{
+  id: 'm10',
+  name: 'Binding Wire 18 SWG',
+  unit: 'kg',
+  projectCode: 'PRJ-2057',
+  inStock: 640,
+  reorderLevel: 200,
+  consumedThisWeek: 95,
+  state: 'Healthy',
+  supplier: 'Vishwa Steel Traders',
+  lastDelivery: '2026-08-14',
+  rate: 82
+}];
+
+
+export const materialAlerts = materials.filter(
+  (m) => m.state === 'Critical' || m.state === 'Low'
+);
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\data\nav.ts
+==============================
+import {
+  LayoutDashboardIcon,
+  Building2Icon,
+  ListChecksIcon,
+  PackageIcon,
+  HardHatIcon,
+  ReceiptIcon,
+  TriangleAlertIcon,
+  FileBarChart2Icon,
+  FolderOpenIcon,
+  SettingsIcon } from
+'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+
+export interface NavItem {
+  label: string;
+  to: string;
+  icon: LucideIcon;
+  badge?: string;
+  badgeTone?: 'critical' | 'warning' | 'neutral';
+}
+
+export const primaryNav: NavItem[] = [
+{ label: 'Dashboard', to: '/', icon: LayoutDashboardIcon },
+{ label: 'Projects', to: '/projects', icon: Building2Icon, badge: '5', badgeTone: 'neutral' },
+{ label: 'Tasks', to: '/tasks', icon: ListChecksIcon, badge: '5', badgeTone: 'warning' },
+{ label: 'Materials', to: '/materials', icon: PackageIcon, badge: '3', badgeTone: 'critical' },
+{ label: 'Labour', to: '/labour', icon: HardHatIcon },
+{ label: 'Expenses', to: '/expenses', icon: ReceiptIcon, badge: '2', badgeTone: 'warning' },
+{ label: 'Issues', to: '/issues', icon: TriangleAlertIcon, badge: '7', badgeTone: 'critical' },
+{ label: 'Reports', to: '/reports', icon: FileBarChart2Icon },
+{ label: 'Documents', to: '/documents', icon: FolderOpenIcon }];
+
+
+export const secondaryNav: NavItem[] = [
+{ label: 'Settings', to: '/settings', icon: SettingsIcon }];
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\data\projects.ts
+==============================
+import type { Project } from '../types';
+
+export const projects: Project[] = [
+{
+  id: 'p1',
+  code: 'PRJ-2041',
+  name: 'Skyline Business Park — Tower B',
+  client: 'Meridian Developments Pvt. Ltd.',
+  location: 'Hinjawadi Phase II, Pune',
+  status: 'On Track',
+  progress: 68,
+  plannedProgress: 66,
+  budget: 486000000,
+  spent: 318400000,
+  startDate: '2025-03-10',
+  endDate: '2027-01-28',
+  manager: 'R. Deshmukh',
+  engineer: 'A. Kulkarni',
+  openIssues: 4,
+  workforce: 186,
+  phase: 'Structure — 14th slab'
+},
+{
+  id: 'p2',
+  code: 'PRJ-2038',
+  name: 'Ring Road Flyover — Package 3',
+  client: 'State Highways Authority',
+  location: 'Wagholi to Kesnand, Pune',
+  status: 'At Risk',
+  progress: 52,
+  plannedProgress: 61,
+  budget: 742000000,
+  spent: 402700000,
+  startDate: '2024-11-02',
+  endDate: '2026-12-15',
+  manager: 'S. Nair',
+  engineer: 'V. Joshi',
+  openIssues: 9,
+  workforce: 241,
+  phase: 'Pier cap casting P12–P18'
+},
+{
+  id: 'p3',
+  code: 'PRJ-2052',
+  name: 'Greenfield Water Treatment Plant',
+  client: 'Municipal Corporation, Nashik',
+  location: 'Satpur MIDC, Nashik',
+  status: 'On Track',
+  progress: 41,
+  plannedProgress: 39,
+  budget: 298500000,
+  spent: 114200000,
+  startDate: '2025-08-18',
+  endDate: '2027-05-30',
+  manager: 'P. Iyer',
+  engineer: 'M. Shaikh',
+  openIssues: 3,
+  workforce: 132,
+  phase: 'Clarifier tank raft'
+},
+{
+  id: 'p4',
+  code: 'PRJ-2029',
+  name: 'Aurum Residency — Phase 1 (5 Towers)',
+  client: 'Aurum Habitat LLP',
+  location: 'Wakad, Pune',
+  status: 'Delayed',
+  progress: 77,
+  plannedProgress: 89,
+  budget: 612000000,
+  spent: 521900000,
+  startDate: '2024-05-06',
+  endDate: '2026-09-30',
+  manager: 'R. Deshmukh',
+  engineer: 'D. Patil',
+  openIssues: 11,
+  workforce: 204,
+  phase: 'Finishing — blockwork & plaster'
+},
+{
+  id: 'p5',
+  code: 'PRJ-2057',
+  name: 'Industrial Warehouse Cluster — Unit 4',
+  client: 'Tarrus Logistics',
+  location: 'Chakan MIDC, Pune',
+  status: 'On Track',
+  progress: 23,
+  plannedProgress: 21,
+  budget: 187400000,
+  spent: 39800000,
+  startDate: '2026-01-12',
+  endDate: '2027-02-20',
+  manager: 'S. Nair',
+  engineer: 'K. Rane',
+  openIssues: 2,
+  workforce: 78,
+  phase: 'Foundation & pedestals'
+},
+{
+  id: 'p6',
+  code: 'PRJ-2016',
+  name: 'Civic Hospital Extension Block',
+  client: 'Directorate of Health Services',
+  location: 'Camp, Pune',
+  status: 'Completed',
+  progress: 100,
+  plannedProgress: 100,
+  budget: 254000000,
+  spent: 249100000,
+  startDate: '2023-09-01',
+  endDate: '2026-03-14',
+  manager: 'P. Iyer',
+  engineer: 'A. Kulkarni',
+  openIssues: 0,
+  workforce: 0,
+  phase: 'Handed over — DLP active'
+}];
+
+
+export const activeProjects = projects.filter((p) => p.status !== 'Completed');
+
+/** Planned vs actual cumulative progress (S-curve) across the portfolio, by month. */
+export const progressCurve = [
+{ month: 'Feb', planned: 21, actual: 20, cash: 118 },
+{ month: 'Mar', planned: 27, actual: 26, cash: 142 },
+{ month: 'Apr', planned: 33, actual: 31, cash: 166 },
+{ month: 'May', planned: 39, actual: 37, cash: 181 },
+{ month: 'Jun', planned: 46, actual: 43, cash: 204 },
+{ month: 'Jul', planned: 52, actual: 48, cash: 229 },
+{ month: 'Aug', planned: 58, actual: 55, cash: 246 }];
+
+==============================
+C:\Users\Tanishqa Dayma\Downloads\570ba901-c465-4c26-9885-3d9b436b404a\src\data\tasks.ts
+==============================
+import type { Task } from '../types';
+
+export const tasks: Task[] = [
+{
+  id: 't1',
+  title: 'Shuttering & reinforcement — 15th floor slab',
+  projectCode: 'PRJ-2041',
+  projectName: 'Skyline Business Park — Tower B',
+  assignee: 'A. Kulkarni',
+  status: 'In Progress',
+  priority: 'High',
+  dueDate: '2026-08-21',
+  overdueDays: 0,
+  progress: 62,
+  wbs: '3.4.12'
+},
+{
+  id: 't2',
+  title: 'Pier cap P14 concrete pour — M40',
+  projectCode: 'PRJ-2038',
+  projectName: 'Ring Road Flyover — Package 3',
+  assignee: 'V. Joshi',
+  status: 'Blocked',
+  priority: 'Critical',
+  dueDate: '2026-08-14',
+  overdueDays: 4,
+  progress: 30,
+  wbs: '2.2.07'
+},
+{
+  id: 't3',
+  title: 'Waterproofing — basement retaining wall east',
+  projectCode: 'PRJ-2029',
+  projectName: 'Aurum Residency — Phase 1',
+  assignee: 'D. Patil',
+  status: 'In Progress',
+  priority: 'High',
+  dueDate: '2026-08-16',
+  overdueDays: 2,
+  progress: 74,
+  wbs: '5.1.03'
+},
+{
+  id: 't4',
+  title: 'Submit revised bar bending schedule (Rev-C)',
+  projectCode: 'PRJ-2052',
+  projectName: 'Greenfield Water Treatment Plant',
+  assignee: 'M. Shaikh',
+  status: 'Review',
+  priority: 'Medium',
+  dueDate: '2026-08-19',
+  overdueDays: 0,
+  progress: 90,
+  wbs: '1.6.02'
+},
+{
+  id: 't5',
+  title: 'Anti-termite treatment before PCC — Unit 4 bay 2',
+  projectCode: 'PRJ-2057',
+  projectName: 'Industrial Warehouse Cluster',
+  assignee: 'K. Rane',
+  status: 'Not Started',
+  priority: 'Medium',
+  dueDate: '2026-08-24',
+  overdueDays: 0,
+  progress: 0,
+  wbs: '2.1.09'
+},
+{
+  id: 't6',
+  title: 'Cube test results — 7 day, batch B-2214',
+  projectCode: 'PRJ-2041',
+  projectName: 'Skyline Business Park — Tower B',
+  assignee: 'QA Lab — Suryodaya',
+  status: 'In Progress',
+  priority: 'Critical',
+  dueDate: '2026-08-13',
+  overdueDays: 5,
+  progress: 45,
+  wbs: '7.3.01'
+},
+{
+  id: 't7',
+  title: 'Lift shaft alignment survey — Tower 3',
+  projectCode: 'PRJ-2029',
+  projectName: 'Aurum Residency — Phase 1',
+  assignee: 'D. Patil',
+  status: 'Not Started',
+  priority: 'High',
+  dueDate: '2026-08-12',
+  overdueDays: 6,
+  progress: 0,
+  wbs: '6.2.11'
+},
+{
+  id: 't8',
+  title: 'Bituminous approach road — layer 1',
+  projectCode: 'PRJ-2038',
+  projectName: 'Ring Road Flyover — Package 3',
+  assignee: 'S. Nair',
+  status: 'Not Started',
+  priority: 'Low',
+  dueDate: '2026-09-02',
+  overdueDays: 0,
+  progress: 0,
+  wbs: '4.5.02'
+},
+{
+  id: 't9',
+  title: 'Fire NOC drawing resubmission to authority',
+  projectCode: 'PRJ-2029',
+  projectName: 'Aurum Residency — Phase 1',
+  assignee: 'R. Deshmukh',
+  status: 'Review',
+  priority: 'Critical',
+  dueDate: '2026-08-10',
+  overdueDays: 8,
+  progress: 55,
+  wbs: '1.2.14'
+},
+{
+  id: 't10',
+  title: 'Clarifier raft PCC levelling — grid C4–C9',
+  projectCode: 'PRJ-2052',
+  projectName: 'Greenfield Water Treatment Plant',
+  assignee: 'M. Shaikh',
+  status: 'Completed',
+  priority: 'Medium',
+  dueDate: '2026-08-11',
+  overdueDays: 0,
+  progress: 100,
+  wbs: '3.1.04'
+},
+{
+  id: 't11',
+  title: 'Scaffolding safety audit — Tower B external',
+  projectCode: 'PRJ-2041',
+  projectName: 'Skyline Business Park — Tower B',
+  assignee: 'HSE — N. Bhosale',
+  status: 'In Progress',
+  priority: 'High',
+  dueDate: '2026-08-20',
+  overdueDays: 0,
+  progress: 35,
+  wbs: '8.1.06'
+},
+{
+  id: 't12',
+  title: 'Reconcile steel receipts against MRN — July',
+  projectCode: 'PRJ-2038',
+  projectName: 'Ring Road Flyover — Package 3',
+  assignee: 'Stores — T. Gawde',
+  status: 'In Progress',
+  priority: 'Medium',
+  dueDate: '2026-08-22',
+  overdueDays: 0,
+  progress: 50,
+  wbs: '9.4.01'
+}];
+
+
+export const overdueTasks = tasks.filter((t) => t.overdueDays > 0);
+export const pendingTasks = tasks.filter((t) => t.status !== 'Completed');
+
