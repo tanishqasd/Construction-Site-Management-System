@@ -45,11 +45,13 @@ Vercel frontend: set `VITE_API_URL` to the real public HTTPS Render service orig
 
 For frontend-root Vercel projects use `npm ci`, `npm run build`, output `dist`. For repository-root projects use the supplied root `vercel.json`. Both configurations include SPA routing and security headers. Never deploy a bundle made with a validation-only API address.
 
-## Verification and current external blocker
+## Verification and deployment status
 
 Run `npm test` in both folders and `npm run build` in `frontend` with the real production `VITE_API_URL`. API tests use isolated in-memory fixtures and do not write client Atlas records. They check auth, workspace/role boundaries, credential revocation, temporary-password enforcement, reference validation, daily attendance corrections, wage snapshots, financial safeguards and document validation. Frontend tests check sessions, API behavior and wage calculations.
 
-On 7 October 2026, the configured local MongoDB hostname failed DNS resolution (`ENOTFOUND`) even outside the sandbox. The JWT secret meets the minimum length. A working private `MONGO_URI` is required before live login, CRUD and cloud connectivity can be verified. The actual public backend URL is also required for a release build and Vercel configuration. No client database records or cloud settings were changed.
+On 7 October 2026, an initial MongoDB DNS failure was followed by successful cluster DNS resolution and a read-only Atlas connection/ping using the private local configuration. The local API started successfully; `/api/health` returned a connected database, owner registration remained disabled, and a preflight from the configured Vercel origin returned the expected origin and credentials headers. The database contains one owner account. Account passwords, authenticated CRUD and deployed cloud connectivity have not been verified. No account credentials or business records were changed.
+
+The actual public Render backend URL and access to the correct deployment accounts are still required to configure and verify the release. The supplied Vercel application URL currently returns `404 NOT_FOUND`; repository updates alone do not confirm a successful cloud deployment.
 
 Verify the real environment with owner, manager and worker accounts: sign-in and refresh, initial password change, site/workforce creation, manager assignment, attendance correction, wage-rate history, tasks/issues/reports, document upload/download, owner expense recording, logout/session revocation and phone-width tables/navigation.
 
