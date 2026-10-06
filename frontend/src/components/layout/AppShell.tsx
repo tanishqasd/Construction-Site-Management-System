@@ -1,20 +1,48 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import { Sidebar } from './Sidebar';
-import { Topbar } from './Topbar';
+import { useEffect, useState } from 'react';
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
+import { LayoutDashboard, Building2, Users, CalendarCheck, ClipboardList, Package, Receipt, Wallet, ShieldAlert, FileText, FolderOpen, Settings, HardHat, Menu, X, Search, Bell, LogOut, ArrowUpRight, ChevronDown, CheckCircle2, RefreshCw } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
+import { useWorkspace } from '../../context/WorkspaceContext';
+import { roleLabels, roleModules } from '../../utils/permissions';
+import { dateInput } from '../../types/workspace';
 
+const navigation=[
+  {to:'/',label:'Overview',icon:LayoutDashboard,group:'WORKSPACE'},
+  {to:'/projects',label:'Projects & sites',icon:Building2,group:'OPERATIONS'},
+  {to:'/workers',label:'Workforce',icon:Users,group:'OPERATIONS'},
+  {to:'/contractors',label:'Contractors',icon:HardHat,group:'OPERATIONS'},
+  {to:'/labour',label:'Attendance',icon:CalendarCheck,group:'OPERATIONS'},
+  {to:'/my-attendance',label:'My attendance',icon:CalendarCheck,group:'OPERATIONS'},
+  {to:'/tasks',label:'Task board',icon:ClipboardList,group:'OPERATIONS'},
+  {to:'/materials',label:'Materials',icon:Package,group:'OPERATIONS'},
+  {to:'/issues',label:'Issues & safety',icon:ShieldAlert,group:'OPERATIONS'},
+  {to:'/expenses',label:'Expenses',icon:Receipt,group:'FINANCE'},
+  {to:'/wages',label:'Wages & payroll',icon:Wallet,group:'FINANCE'},
+  {to:'/reports',label:'Daily reports',icon:FileText,group:'RESOURCES'},
+  {to:'/documents',label:'Documents',icon:FolderOpen,group:'RESOURCES'},
+  {to:'/team',label:'Team access',icon:Users,group:'ADMINISTRATION'},
+  {to:'/settings',label:'My account',icon:Settings,group:'ADMINISTRATION'},
+];
 export function AppShell() {
-  const [navOpen, setNavOpen] = useState(false);
-
-  return (
-    <div className="flex min-h-full w-full bg-canvas">
-      <Sidebar open={navOpen} onClose={() => setNavOpen(false)} />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <Topbar onMenuClick={() => setNavOpen(true)} />
-        <main className="flex-1 px-4 py-5 lg:px-6 lg:py-6">
-          <Outlet />
-        </main>
-      </div>
-    </div>
-  );
+  const {user,logout}=useAuth();const {role,data,loading,error,refresh}=useWorkspace();const location=useLocation();const [navOpen,setNavOpen]=useState(false);const [query,setQuery]=useState('');const [panel,setPanel]=useState<'notifications'|'account'|null>(null);
+  useEffect(()=>{setNavOpen(false);setPanel(null);setQuery('');},[location.pathname]);
+  useEffect(()=>{const handler=(event:KeyboardEvent)=>{if(event.key==='Escape'){setNavOpen(false);setPanel(null);setQuery('');}};window.addEventListener('keydown',handler);return()=>window.removeEventListener('keydown',handler);},[]);
+  const nav=navigation.filter((item)=>roleModules[role].includes(item.to)&&(!user?.mustChangePassword||item.to==='/settings'));const today=dateInput();
+  const alerts=[...data.issues.filter((item)=>item.status==='Open'&&item.severity==='Critical').map((item)=>({title:item.title,detail:'Critical issue',to:'/issues'})),...data.tasks.filter((item)=>item.status!=='Completed'&&item.dueDate&&item.dueDate.slice(0,10)<today).map((item)=>({title:item.title,detail:'Task overdue',to:'/tasks'})),...data.materials.filter((item)=>item.quantity<=(item.reorderLevel??10)).map((item)=>({title:item.materialName,detail:'Stock below reorder threshold',to:'/materials'}))];
+  const results=query.trim()?[
+    ...data.sites.map((item)=>({title:item.siteName,detail:item.location,to:'/projects'})),...data.workers.map((item)=>({title:item.fullName,detail:item.skill,to:'/workers'})),...data.tasks.map((item)=>({title:item.title,detail:'Task',to:'/tasks'})),...data.issues.map((item)=>({title:item.title,detail:'Issue',to:'/issues'})),...data.materials.map((item)=>({title:item.materialName,detail:'Material',to:'/materials'})),...data.documents.map((item)=>({title:item.title,detail:'Document',to:'/documents'})),...data.contractors.map((item)=>({title:item.companyName,detail:item.trade,to:'/contractors'})),...data.reports.map((item)=>({title:item.title,detail:'Report',to:'/reports'})),...data.expenses.map((item)=>({title:item.description,detail:'Expense',to:'/expenses'})),...data.team.map((item)=>({title:item.name,detail:'Team account',to:'/team'}))
+  ].filter((item)=>roleModules[role].includes(item.to)&&`${item.title} ${item.detail}`.toLowerCase().includes(query.toLowerCase())).slice(0,7):[];
+  const initials=user?.name.split(' ').map((word)=>word[0]).join('').slice(0,2).toUpperCase();
+  return <div className="app-workspace">{navOpen&&<button className="fixed inset-0 z-30 bg-ink-950/40 backdrop-blur-sm lg:hidden" aria-label="Close navigation" onClick={()=>setNavOpen(false)}/>}
+    <aside className={`app-sidebar ${navOpen?'open':''}`} aria-label="Primary navigation"><div className="brand-link"><Link to="/" className="flex items-center gap-3"><span className="brand-mark"><HardHat size={23} strokeWidth={1.8}/></span><span><strong>maple<span className="text-safety-500">.</span></strong><small>CONSTRUCTION WORKSPACE</small></span></Link><button type="button" className="ml-auto text-ink-400 lg:hidden" aria-label="Close navigation" onClick={(event)=>{event.preventDefault();setNavOpen(false);}}><X size={20}/></button></div>
+      <div className={`role-card ${role}`}><span className="h-2 w-2 rounded-full bg-current"/><span>{roleLabels[role]}</span><ShieldAlert size={13} className="ml-auto opacity-60"/></div>
+      <nav className="sidebar-navigation">{['WORKSPACE','OPERATIONS','FINANCE','RESOURCES','ADMINISTRATION'].map((group)=>{const entries=nav.filter((entry)=>entry.group===group);return entries.length?<div key={group}><p className="nav-group-label">{group}</p>{entries.map((entry)=><NavLink key={entry.to} to={entry.to} end={entry.to==='/'} className={({isActive})=>`workspace-nav-link ${isActive?'active':''}`}><entry.icon size={17}/><span>{role==='worker'&&entry.to==='/tasks'?'My tasks':role==='worker'&&entry.to==='/wages'?'My wages':entry.label}</span>{entry.to==='/issues'&&data.issues.filter((issue)=>issue.status==='Open').length>0&&<small>{data.issues.filter((issue)=>issue.status==='Open').length}</small>}</NavLink>)}</div>:null;})}</nav>
+      <div className="sidebar-footer"><p className="text-xs font-semibold text-ink-600">{roleLabels[role]}</p><div className="mt-3 flex items-center gap-2 text-[10px] text-ink-400"><span className={`h-1.5 w-1.5 rounded-full ${error?'bg-signal-red':loading?'bg-safety-400':'bg-signal-green'}`}/>{user?.mustChangePassword?'PASSWORD UPDATE REQUIRED':error?'CONNECTION UNAVAILABLE':loading?'LOADING WORKSPACE':'WORKSPACE SYNCED'}</div></div>
+    </aside>
+    <div className="app-main"><header className="app-topbar"><button className="icon-button lg:hidden" aria-label="Open navigation" onClick={()=>setNavOpen(true)}><Menu size={20}/></button><div className="relative min-w-0 flex-1 max-w-lg"><Search size={16} className="absolute left-0 top-2.5 text-ink-400"/><input aria-label="Search workspace" className="w-full bg-transparent py-2 pl-7 pr-2 text-sm outline-none placeholder:text-ink-400" placeholder="Search your workspace..." value={query} onChange={(event)=>setQuery(event.target.value)}/>{query&&<div className="popover left-0 right-0 top-11">{results.length?results.map((result,index)=><Link key={`${result.to}-${index}`} to={result.to} className="popover-item"><div><p className="text-xs font-semibold">{result.title}</p><p className="mt-1 text-[11px] text-ink-400">{result.detail}</p></div><ArrowUpRight size={14}/></Link>):<p className="p-5 text-xs text-ink-400">No matching records in your workspace.</p>}</div>}</div><span className="ml-auto hidden text-xs text-ink-400 xl:block">{new Date().toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric',timeZone:'Asia/Kolkata'})}</span>
+      <button className="icon-button" aria-label="Refresh workspace" disabled={loading} onClick={()=>void refresh()}><RefreshCw size={18} className={loading?'animate-spin':''}/></button><div className="relative"><button className="icon-button relative" aria-label="Notifications" aria-expanded={panel==='notifications'} onClick={()=>setPanel(panel==='notifications'?null:'notifications')}><Bell size={19}/>{alerts.length>0&&<span className="absolute right-1 top-1 h-1.5 w-1.5 rounded-full bg-safety-500"/>}</button>{panel==='notifications'&&<div className="popover right-0 top-11 w-80 max-w-[calc(100vw-2rem)]"><div className="border-b border-ink-100 px-4 py-3 text-sm font-semibold">Attention queue <span className="text-ink-400">({alerts.length})</span></div>{alerts.length?alerts.slice(0,6).map((alert,index)=><Link key={index} to={alert.to} className="popover-item"><div><p className="text-xs font-semibold">{alert.title}</p><p className="mt-1 text-[11px] text-ink-400">{alert.detail}</p></div><ArrowUpRight size={14}/></Link>):<div className="flex items-center gap-2 p-5 text-xs text-ink-400"><CheckCircle2 size={17} className="text-signal-green"/>No urgent items right now.</div>}</div>}</div>
+      <div className="h-6 w-px bg-ink-200"/><div className="relative"><button className="flex items-center gap-2.5" aria-label="Account menu" aria-expanded={panel==='account'} onClick={()=>setPanel(panel==='account'?null:'account')}><span className="avatar">{initials}</span><span className="hidden text-left sm:block"><strong className="block max-w-[160px] truncate text-xs font-semibold">{user?.name}</strong><small className="text-[10px] text-ink-400">{roleLabels[role]}</small></span><ChevronDown size={13} className="hidden text-ink-400 sm:block"/></button>{panel==='account'&&<div className="popover right-0 top-12 w-56"><div className="border-b border-ink-100 px-4 py-3"><p className="text-xs font-semibold">{user?.name}</p><p className="mt-1 truncate text-[11px] text-ink-400">{user?.email}</p></div><Link to="/settings" className="popover-item text-xs"><span>Account settings</span><Settings size={15}/></Link><button className="popover-item w-full text-xs text-signal-red" onClick={logout}><span>Sign out</span><LogOut size={15}/></button></div>}</div>
+    </header>
+    <main className="workspace-content"><Outlet/></main><footer className="workspace-footer"><span>Maple Construction · Built for better site operations</span><span className="hidden sm:block">{roleLabels[role]}</span></footer></div>
+  </div>;
 }

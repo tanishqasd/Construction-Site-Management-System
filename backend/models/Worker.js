@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 
 const workerSchema = new mongoose.Schema(
   {
+    organizationId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', sparse: true, unique: true },
     fullName: {
       type: String,
       required: true,
@@ -38,6 +40,7 @@ const workerSchema = new mongoose.Schema(
     dailyWage: {
       type: Number,
       required: true,
+      min: 0,
     },
 
     status: {

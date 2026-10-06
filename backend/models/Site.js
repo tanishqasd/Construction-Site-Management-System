@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 const siteSchema = new mongoose.Schema(
   {
+    organizationId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
+    progress: { type: Number, min: 0, max: 100, default: 0 },
+    managerName: { type: String, trim: true },
     siteName: {
       type: String,
       required: true,

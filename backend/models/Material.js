@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 const materialSchema = new mongoose.Schema(
   {
+    organizationId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
+    reorderLevel: { type: Number, min: 0, default: 10 },
+    supplier: { type: String, trim: true },
     materialName: {
       type: String,
       required: true,

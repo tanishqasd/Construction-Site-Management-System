@@ -1,202 +1,21 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ShieldCheckIcon, HardHatIcon, UsersIcon, LockIcon, MailIcon, UserIcon } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useEffect, useState, type FormEvent } from 'react';
+import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { HardHat, ShieldCheck, ArrowRight, Loader2, CheckCircle2 } from 'lucide-react';
+import { useAuth, type User } from '../context/AuthContext';
 import { apiRequest } from '../services/api';
-import { Button } from '../components/ui/Button';
 
 export function LoginPage() {
-  const [isRegister, setIsRegister] = useState(false);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'owner' | 'hr' | 'worker'>('owner');
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const { login } = useAuth();
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-
-    try {
-      const endpoint = isRegister ? '/auth/register' : '/auth/login';
-      const payload = isRegister ? { name, email, password, role } : { email, password };
-
-      const data = await apiRequest<{
-        token: string;
-        user: { _id?: string; id?: string; name: string; email: string; role: string };
-      }>(endpoint, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      });
-
-      login(data.token, data.user);
-      navigate('/');
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Authentication failed. Please verify your credentials.');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-canvas p-4">
-      <div className="w-full max-w-md rounded-xl border border-ink-200 bg-white p-8 shadow-panel">
-        <div className="text-center">
-          <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-ink-900 text-safety-400 shadow-xs">
-            <HardHatIcon className="h-6 w-6" strokeWidth={2.2} />
-          </div>
-          <h1 className="font-display text-xl font-bold tracking-tight text-ink-900">
-            Maple Construction
-          </h1>
-          <p className="mt-1 font-sans text-xs text-ink-500">
-            {isRegister
-              ? 'Register an enterprise account with role permissions'
-              : 'Sign in to access your role-specific dashboard'}
-          </p>
-        </div>
-
-        {error && (
-          <div className="mt-4 rounded-md bg-signal-redSoft p-2.5 text-xs text-signal-red">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4 font-sans">
-          {isRegister && (
-            <div>
-              <label className="block text-2xs font-semibold uppercase tracking-wider text-ink-500">
-                Full Name
-              </label>
-              <div className="relative mt-1">
-                <UserIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400" />
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g., Tanishqa Dayma"
-                  className="w-full rounded-md border border-ink-200 bg-white pl-9 pr-3 py-2 text-xs text-ink-900 focus:border-ink-400 focus:outline-none"
-                  required
-                />
-              </div>
-            </div>
-          )}
-
-          <div>
-            <label className="block text-2xs font-semibold uppercase tracking-wider text-ink-500">
-              Email Address
-            </label>
-            <div className="relative mt-1">
-              <MailIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400" />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@mapleconstruction.com"
-                className="w-full rounded-md border border-ink-200 bg-white pl-9 pr-3 py-2 text-xs text-ink-900 focus:border-ink-400 focus:outline-none"
-                required
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-2xs font-semibold uppercase tracking-wider text-ink-500">
-              Password
-            </label>
-            <div className="relative mt-1">
-              <LockIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400" />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full rounded-md border border-ink-200 bg-white pl-9 pr-3 py-2 text-xs text-ink-900 focus:border-ink-400 focus:outline-none"
-                required
-              />
-            </div>
-          </div>
-
-          {/* Role Selection during Registration */}
-          {isRegister && (
-            <div>
-              <label className="block text-2xs font-semibold uppercase tracking-wider text-ink-500 mb-1.5">
-                Designated Access Role
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                <button
-                  type="button"
-                  onClick={() => setRole('owner')}
-                  className={`flex flex-col items-center justify-center rounded-lg border p-2.5 text-xs transition-colors ${
-                    role === 'owner'
-                      ? 'border-ink-900 bg-ink-900 text-white font-semibold'
-                      : 'border-ink-200 bg-white text-ink-600 hover:bg-ink-50'
-                  }`}
-                >
-                  <ShieldCheckIcon className="mb-1 h-4 w-4" />
-                  Owner
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setRole('hr')}
-                  className={`flex flex-col items-center justify-center rounded-lg border p-2.5 text-xs transition-colors ${
-                    role === 'hr'
-                      ? 'border-ink-900 bg-ink-900 text-white font-semibold'
-                      : 'border-ink-200 bg-white text-ink-600 hover:bg-ink-50'
-                  }`}
-                >
-                  <UsersIcon className="mb-1 h-4 w-4" />
-                  HR / PM
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setRole('worker')}
-                  className={`flex flex-col items-center justify-center rounded-lg border p-2.5 text-xs transition-colors ${
-                    role === 'worker'
-                      ? 'border-ink-900 bg-ink-900 text-white font-semibold'
-                      : 'border-ink-200 bg-white text-ink-600 hover:bg-ink-50'
-                  }`}
-                >
-                  <HardHatIcon className="mb-1 h-4 w-4" />
-                  Worker
-                </button>
-              </div>
-            </div>
-          )}
-
-          <Button
-            variant="primary"
-            size="md"
-            type="submit"
-            className="w-full justify-center font-medium"
-            disabled={loading}
-          >
-            {loading ? 'Authenticating...' : isRegister ? 'Create Account & Sign In' : 'Sign In'}
-          </Button>
-        </form>
-
-        <div className="mt-4 text-center">
-          <button
-            type="button"
-            onClick={() => {
-              setIsRegister(!isRegister);
-              setError(null);
-            }}
-            className="text-xs text-ink-600 underline hover:text-ink-900"
-          >
-            {isRegister ? 'Already registered? Sign In' : "Need an account? Register with designated role"}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+  const {login,isAuthenticated}=useAuth();const location=useLocation();const navigate=useNavigate();const [register,setRegister]=useState(false);const [name,setName]=useState('');const [email,setEmail]=useState('');const [password,setPassword]=useState('');const [busy,setBusy]=useState(false);const [error,setError]=useState('');const [registrationEnabled,setRegistrationEnabled]=useState(false);
+  useEffect(()=>{let active=true;void apiRequest<{registrationEnabled:boolean}>('/auth/config').then(config=>{if(active)setRegistrationEnabled(config.registrationEnabled);}).catch(()=>{if(active)setRegistrationEnabled(false);});return()=>{active=false;};},[]);
+  const submit=async(event:FormEvent)=>{event.preventDefault();setBusy(true);setError('');try{const response=await apiRequest<{token:string;user:User}>(register?'/auth/register':'/auth/login',{method:'POST',body:JSON.stringify(register?{name,email,password,role:'owner'}:{email,password})});login(response.token,response.user);navigate('/');}catch(err){setError(err instanceof Error?err.message:'Could not sign you in.');}finally{setBusy(false);}};
+  if(isAuthenticated)return <Navigate to="/" replace/>;
+  return <div className="login-page"><section className="login-story"><Link to="/login" className="flex items-center gap-3"><span className="rounded-xl bg-safety-400 p-2.5 text-ink-900"><HardHat size={26}/></span><span className="text-2xl font-semibold tracking-tight">maple<span className="text-safety-400">.</span></span></Link><div className="relative z-10 my-auto py-14"><p className="mb-6 text-[11px] font-semibold uppercase tracking-[.24em] text-safety-300">BUILT FOR THE WAY YOU BUILD</p><h1 className="max-w-lg text-4xl font-semibold leading-[1.2] tracking-tight xl:text-5xl">Great projects start<br/>with a connected<br/><span className="text-safety-300">site team.</span></h1><p className="mt-6 max-w-sm text-sm leading-7 text-white/55">From the boardroom to the building site. Bring your people, projects and daily operations into one workspace.</p><div className="mt-9 space-y-3">{['A dedicated workspace for every role','Clear visibility across every site','Daily operations that move work forward'].map((text)=><p key={text} className="flex items-center gap-2.5 text-xs text-white/70"><CheckCircle2 size={16} className="text-safety-300"/>{text}</p>)}</div></div><div className="construction-line-art" aria-hidden="true"><span/><span/><span/><span/></div><p className="relative z-10 text-[10px] text-white/30">MAPLE CONSTRUCTION / SITE OPERATIONS PLATFORM</p></section>
+    <section className="login-form-side"><div className="w-full max-w-[410px]"><div className="mb-9"><p className="mb-3 text-[11px] font-semibold uppercase tracking-[.15em] text-safety-600">YOUR SITE WORKSPACE</p><h2 className="text-3xl font-semibold tracking-tight">{register?'Create your workspace':'Welcome back'}</h2><p className="mt-3 text-sm leading-6 text-ink-500">{register?'Start as the owner, then invite managers and workers from Team access.':'Sign in to continue to your role’s dashboard.'}</p></div>
+      {location.state?.message&&<p role="status" className="mb-5 rounded-xl bg-signal-greenSoft p-3 text-sm text-signal-green">{String(location.state.message)}</p>}{error&&<p role="alert" className="mb-5 rounded-xl border border-red-100 bg-signal-redSoft p-3 text-xs leading-5 text-signal-red">{error}</p>}
+      <form onSubmit={submit} className="space-y-5">{register&&<label className="field-label">Full name<input className="field-input" autoComplete="name" required value={name} onChange={(event)=>setName(event.target.value)} placeholder="Your name"/></label>}<label className="field-label">Email address<input className="field-input" type="email" required autoComplete="email" value={email} onChange={(event)=>setEmail(event.target.value)} placeholder="you@company.com"/></label><label className="field-label">Password<input className="field-input" type="password" required minLength={register?8:undefined} autoComplete={register?'new-password':'current-password'} value={password} onChange={(event)=>setPassword(event.target.value)} placeholder={register?'At least 8 characters':'Enter your password'}/></label><button className="primary-button w-full justify-center py-3" disabled={busy} type="submit">{busy?<Loader2 className="animate-spin" size={17}/>:null}{busy?'Please wait...':register?'Create owner workspace':'Sign in'}<ArrowRight size={16}/></button></form>
+      {registrationEnabled&&<p className="mt-5 text-center text-xs text-ink-500">{register?'Already have an account?':'New to Maple?'} <button type="button" className="font-semibold text-steel-600" onClick={()=>{setRegister(!register);setError('');}}>{register?'Sign in':'Create a workspace'}</button></p>}
+      <p className="mt-8 flex items-center justify-center gap-2 text-xs leading-5 text-ink-400"><ShieldCheck size={15}/>Secure access for your construction team.</p><p className="mt-3 text-center text-xs leading-5 text-ink-400">Managers and workers: contact your workspace owner for an account or password assistance.</p>
+    </div></section>
+  </div>;
 }
-
 export default LoginPage;

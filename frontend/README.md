@@ -1,27 +1,9 @@
-# Construction Site Management System (Enterprise MERN Stack)
+# Maple client frontend
 
-A full-stack construction site operations and cost-control management dashboard engineered with React 18, TypeScript, Tailwind CSS, Node.js, Express, and MongoDB Atlas.
+Run `npm ci` and `npm run dev` in this folder. Sign in using a real backend account. Demonstration accounts, persona switching and sample records have been removed.
 
-## 🚀 Key Features
+Development defaults to `http://localhost:5000/api`. Production requires the real public HTTPS backend URL in `VITE_API_URL`; this is embedded at build time. Run `npm test` for request/session/payroll checks and `npm run build` for TypeScript and bundling.
 
-- **Authentication & RBAC:** JWT-based user authentication with route guards and data isolation.
-- **Project Portfolio:** Real-time tracking of budgets, timelines, and execution phases across active sites.
-- **Labour & Attendance Muster:** Daily attendance logging, turnout analytics, and automatic wage burn computation.
-- **Cost Control & Expense Ledger:** Categorized expenditure tracking with multi-tier audit trails.
-- **Inventory & Procurement:** Live material stock valuation and unit cost monitoring.
-- **Incident & Task Management:** SLA tracking, overdue calculations, and critical path issue registers.
+The active app uses `AuthContext`, `WorkspaceContext`, `Dashboard`, `ResourcePage`, `AttendancePage` and `AccountPage`. Protected routes verify account status with the API; new/reset accounts must change their password before accessing site data. Every write goes to the backend.
 
-## 🛠️ Tech Stack
-
-- **Frontend:** React 18, Vite, TypeScript, Tailwind CSS, Lucide React, Recharts
-- **Backend:** Node.js, Express.js (v5), Mongoose ODM, JSON Web Tokens, Bcrypt.js
-- **Database:** MongoDB Atlas
-
-## 📋 Installation & Setup
-
-### 1. Backend Setup
-```bash
-cd backend
-npm install
-npm run seed     # Seeds initial database fixtures
-npm run dev      # Runs server on http://localhost:5000
+See the [root README](../README.md) for account setup, permissions, database requirements, deployment and the remaining connection blocker.

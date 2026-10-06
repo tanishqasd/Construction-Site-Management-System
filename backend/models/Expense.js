@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const expenseSchema = new mongoose.Schema(
   {
+    organizationId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
+    status: { type: String, enum: ['Pending', 'Approved', 'Rejected', 'Paid'], default: 'Pending' },
+    paidTo: { type: String, trim: true },
+    paymentMethod: { type: String, trim: true },
     site: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Site",

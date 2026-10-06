@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 
 const issueSchema = new mongoose.Schema(
   {
+    organizationId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
+    category: { type: String, enum: ['Safety', 'Quality', 'Equipment', 'Other'], default: 'Quality' },
     title: {
       type: String,
       required: true,
