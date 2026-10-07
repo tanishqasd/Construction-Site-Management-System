@@ -12,9 +12,9 @@ function load(relativePath, globals = {}) {
   const code = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText;
   const exports = {};
   vm.runInNewContext(code, {
-    exports, atob, Headers, Response, URL, AbortController, setTimeout, clearTimeout,
+    exports, atob, btoa, Headers, Response, URL, AbortController, setTimeout, clearTimeout,
     testEnv: { VITE_API_URL: 'https://backend.example.com', PROD: true },
-    require: () => load('services/apiUrl.ts'),
+    require: (specifier) => load(path.posix.normalize(path.posix.join(path.posix.dirname(relativePath), `${specifier}.ts`)), globals),
     ...globals,
   });
   return exports;

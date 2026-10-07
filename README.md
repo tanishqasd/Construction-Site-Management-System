@@ -4,7 +4,11 @@ Client application for Owner / Director, Site HR / Manager and Field Worker acco
 
 ## Application behavior
 
-There is no demonstration login, role switcher, seeded business data, offline simulated authentication or local record store. Every business record comes from the authenticated API. Server failures show actionable errors and retry controls rather than fabricated records. Protected pages verify the stored session with the server before opening.
+Client sign-in uses real accounts and the authenticated API. Server failures show actionable errors and retry controls. Protected client pages verify the stored session with the server before opening.
+
+An explicitly selected demo workspace is also available while `VITE_ENABLE_DEMO=true`. Owner, Site HR and Worker buttons open isolated sample projects, workforce, tasks, muster rolls, inventory, expenses, contractors, reports and downloadable documents. Demo changes persist only in this browser and can be reset. Demo sessions use a separate marker, clear client tokens on entry, and never send protected requests to the backend. The same role and site restrictions apply to demo views. There is no automatic fallback from a failed client login to demo access.
+
+Sample IDs are `owner@construction.com`, `hr@construction.com` and `worker@construction.com`; `admin@example.com` is a demo-only Owner alias. Sample exploration does not require a password. Client passwords are not published in the frontend. Use **Client sign-in** for real accounts. To remove demo access, set `VITE_ENABLE_DEMO=false` and rebuild; a saved demo marker then cannot open protected pages.
 
 | Role | Modules and permissions |
 | --- | --- |
@@ -49,7 +53,7 @@ For frontend-root Vercel projects use `npm ci`, `npm run build`, output `dist`. 
 
 Run `npm test` in both folders and `npm run build` in `frontend` with the real production `VITE_API_URL`. API tests use isolated in-memory fixtures and do not write client Atlas records. They check auth, workspace/role boundaries, credential revocation, temporary-password enforcement, reference validation, daily attendance corrections, wage snapshots, financial safeguards and document validation. Frontend tests check sessions, API behavior and wage calculations.
 
-On 7 October 2026, an initial MongoDB DNS failure was followed by successful cluster DNS resolution and a read-only Atlas connection/ping using the private local configuration. The local API started successfully; `/api/health` returned a connected database, owner registration remained disabled, and a preflight from the configured Vercel origin returned the expected origin and credentials headers. The database contains one owner account. Account passwords, authenticated CRUD and deployed cloud connectivity have not been verified. No account credentials or business records were changed.
+On 7 October 2026, an initial MongoDB DNS failure was followed by successful cluster DNS resolution and a read-only Atlas connection/ping using the private local configuration. The local API started successfully; `/api/health` returned a connected database, owner registration remained disabled, and a preflight from the configured Vercel origin returned the expected origin and credentials headers. At the user's request, the three named real accounts were created within the existing owner's workspace, with HR and Worker assigned to `marvel`. The Worker is linked to an editable sample Labour profile, phone `0000000000`, daily wage ₹950. Replace these sample workforce details before recording real shifts. Existing accounts were not reset. Each new account passed local login/session checks and requires a password change before accessing client records. Authenticated business CRUD and deployed backend connectivity still require verification.
 
 The public Render backend is `https://maple-construction-backend.onrender.com`. On 7 October 2026 it responded, but `/api/health` and `/api/auth/config` returned 404 and the Vercel-origin preflight omitted `Access-Control-Allow-Origin`. These responses do not match the current backend implementation; deploy the current repository commit with the documented root, commands and private environment settings before validating frontend login. Access to the correct Render account is still required.
 

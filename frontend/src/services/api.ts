@@ -1,9 +1,13 @@
 import { resolveApiUrl } from './apiUrl';
+import { readDemoUser } from '../demo/session';
+import { demoRequest } from '../demo/api';
 const BASE_URL = resolveApiUrl(import.meta.env.VITE_API_URL, import.meta.env.PROD);
 export class ApiError extends Error {
   constructor(message: string, public status: number, public code?: string) { super(message); this.name = 'ApiError'; }
 }
 export const apiRequest = async <T>(endpoint: string, options: RequestInit = {}): Promise<T> => {
+  // An explicit demo session never sends protected reads or writes to the API.
+  if (!['/auth/login', '/auth/register', '/auth/config'].includes(endpoint) && readDemoUser()) return demoRequest<T>(endpoint, options);
   let token: string | null = null;
   try { token = localStorage.getItem('token'); } catch { /* unauthenticated requests still work */ }
   const isAuthRequest = ['/auth/login', '/auth/register', '/auth/config'].includes(endpoint);
